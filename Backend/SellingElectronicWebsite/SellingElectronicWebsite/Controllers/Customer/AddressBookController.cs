@@ -37,7 +37,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -57,7 +57,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -77,7 +77,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -96,7 +96,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -120,7 +120,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -145,7 +145,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -169,7 +169,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }

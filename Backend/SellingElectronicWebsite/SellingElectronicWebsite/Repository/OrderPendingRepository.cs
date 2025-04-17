@@ -81,20 +81,13 @@ namespace SellingElectronicWebsite.Repository
         /// <param name="sortBy">timeAsc/timeDesc/null</param>
         public async Task<List<OrderPendingVM>> GetAll(string status, string sortBy)
         {
-            var listOrderPending = await _context.OrderPendings
+            var listOrderPendingEnties = await _context.OrderPendings
                                                         .Include(p => p.Customer)
                                                         .Include(p => p.Employee)
                                                         .Where(p => p.Status == status)
-                                                        .Select(p => new OrderPendingVM(
-                                                                                        p.OrderPendingId,
-                                                                                        p.Customer.FullName,
-                                                                                        p.Customer.CustomerId,
-                                                                                        p.Employee.EmployeeId,
-                                                                                        p.Employee.FullName,
-                                                                                        p.OdertDate,
-                                                                                        p.Status
-                                                                                        ))
                                                         .ToListAsync();
+
+            var listOrderPending = _mapper.Map<List<OrderPendingVM>>(listOrderPendingEnties);
 
             if (!string.IsNullOrEmpty(sortBy))
             {
@@ -107,22 +100,12 @@ namespace SellingElectronicWebsite.Repository
             // add list for order pending item
             foreach (var item in listOrderPending)
             {
-                var listProductOrderPendingVM = await _context.ProductOrderPendings
+                var listProductOrderPending = await _context.ProductOrderPendings
                                                              .Where(p => p.OrderPendingId == item.OrderPendingId)
                                                              .Include(p => p.Product)
-                                                             .Select(p => new ProductOrderPendingVM(
-                                                                                                p.ProductOrderPendingId,
-                                                                                                p.Product.ProductId,
-                                                                                                p.Product.ProductName,
-                                                                                                p.Amount,
-                                                                                                p.Color.ColorName,
-                                                                                                p.Product.Brand,
-                                                                                                p.Product.Series,
-                                                                                                p.Product.Price,
-                                                                                                p.Product.Category.CategoryName,
-                                                                                                p.Product.MainImg
-                                                                                                ))
                                                              .ToListAsync();
+                var listProductOrderPendingVM = _mapper.Map<List<ProductOrderPendingVM>>(listProductOrderPending);
+
                 item.ListProductOrederPending = listProductOrderPendingVM;
             }
             //add sale
@@ -143,40 +126,24 @@ namespace SellingElectronicWebsite.Repository
 
         public async Task<OrderPendingVM> GetById(int id)
         {
-            var OrderPending = await _context.OrderPendings
+            var OrderPendingEnties = await _context.OrderPendings
                                                         .Include(p => p.Customer)
                                                         .Include(p => p.Employee)
                                                         .Where(p => p.OrderPendingId == id)
-                                                        .Select(p => new OrderPendingVM(p.OrderPendingId,
-                                                                                        p.Customer.FullName,
-                                                                                        p.Customer.CustomerId,
-                                                                                        p.Employee.EmployeeId,
-                                                                                        p.Employee.FullName,
-                                                                                        p.OdertDate,
-                                                                                        p.Status
-                                                                                        ))
                                                         .FirstOrDefaultAsync();
+            var OrderPending = _mapper.Map<OrderPendingVM>(OrderPendingEnties);
+
             if (OrderPending == null)
             {
                 throw new Exception("Don't exist item by id: " + id);
             }
             // add list for item order pending
-            var listProductOrderPendingVM = await _context.ProductOrderPendings
+            var listProductOrderPending = await _context.ProductOrderPendings
                                                              .Where(p => p.OrderPendingId == OrderPending.OrderPendingId)
                                                              .Include(p => p.Product)
-                                                             .Select(p => new ProductOrderPendingVM(
-                                                                                                p.ProductOrderPendingId,
-                                                                                                p.Product.ProductId,
-                                                                                                p.Product.ProductName,
-                                                                                                p.Amount,
-                                                                                                p.Color.ColorName,
-                                                                                                p.Product.Brand,
-                                                                                                p.Product.Series,
-                                                                                                p.Product.Price,
-                                                                                                p.Product.Category.CategoryName,
-                                                                                                p.Product.MainImg
-                                                                                                ))
                                                              .ToListAsync();
+            var listProductOrderPendingVM = _mapper.Map<List<ProductOrderPendingVM>>(listProductOrderPending);
+
             // add sale for product
             foreach (var itemProduct in listProductOrderPendingVM)
             {
@@ -194,19 +161,13 @@ namespace SellingElectronicWebsite.Repository
         /// <param name="sortBy">timeAsc/timeDesc/null</param>
         public async Task<List<OrderPendingVM>> GetByPage(string status, int pageIndex, int pageSize, string sortBy)
         {
-            var listOrderPending = await _context.OrderPendings
+            var listOrderPendingEnties = await _context.OrderPendings
                                                         .Include(p => p.Customer)
                                                         .Include(p => p.Employee)
                                                         .Where(p => p.Status == status)
-                                                        .Select(p => new OrderPendingVM(p.OrderPendingId,
-                                                                                        p.Customer.FullName,
-                                                                                        p.Customer.CustomerId,
-                                                                                        p.Employee.EmployeeId,
-                                                                                        p.Employee.FullName,
-                                                                                        p.OdertDate,
-                                                                                        p.Status
-                                                                                        ))
                                                         .ToListAsync();
+            var listOrderPending = _mapper.Map<List<OrderPendingVM>>(listOrderPendingEnties);
+
 
             if (!string.IsNullOrEmpty(sortBy))
             {
@@ -219,22 +180,12 @@ namespace SellingElectronicWebsite.Repository
             // add list product for order pending item
             foreach (var item in listOrderPending)
             {
-                var listProductOrderPendingVM = await _context.ProductOrderPendings
+                var listProductOrderPending = await _context.ProductOrderPendings
                                                              .Where(p => p.OrderPendingId == item.OrderPendingId)
                                                              .Include(p => p.Product)
-                                                             .Select(p => new ProductOrderPendingVM(
-                                                                                                 p.ProductOrderPendingId,
-                                                                                                p.Product.ProductId,
-                                                                                                p.Product.ProductName,
-                                                                                                p.Amount,
-                                                                                                p.Color.ColorName,
-                                                                                                p.Product.Brand,
-                                                                                                p.Product.Series,
-                                                                                                p.Product.Price,
-                                                                                                p.Product.Category.CategoryName,
-                                                                                                p.Product.MainImg
-                                                                                                ))
                                                              .ToListAsync();
+                var listProductOrderPendingVM = _mapper.Map<List<ProductOrderPendingVM>>(listProductOrderPending);
+
                 item.ListProductOrederPending = listProductOrderPendingVM;
             }
             //add sale for product
@@ -289,7 +240,9 @@ namespace SellingElectronicWebsite.Repository
                 else //check amount product in the store
                 {
                     
-                    var listOrderPending = await _context.ProductOrderPendings.Where(p => p.OrderPendingId == idOrderPending).ToListAsync();
+                    var listOrderPending = await _context.ProductOrderPendings
+                        .Include(p => p.Product)
+                        .Where(p => p.OrderPendingId == idOrderPending).ToListAsync();
                     //check amount each product items
                     foreach(var itemProduct in listOrderPending)
                     {
@@ -323,6 +276,7 @@ namespace SellingElectronicWebsite.Repository
                                                   Status = "Pending", 
                                                   OrderType = "online",
                                                   OrderPendingId = item.OrderPendingId,
+                                                  EmployeeId = item.EmployeeId,
                    };
                     await _context.AddAsync(newOrder);
                     await _context.SaveChangesAsync();
@@ -330,6 +284,8 @@ namespace SellingElectronicWebsite.Repository
                     //create order product item for order item by listOrderPending
                     foreach (var itemProduct in listOrderPending)
                     {
+                        
+
                         ProductOrder newProductOrder = new ProductOrder()
                         {
                             OrderId = newOrder.OrderId,
@@ -337,6 +293,17 @@ namespace SellingElectronicWebsite.Repository
                             Amount = itemProduct.Amount,
                             ColorId = itemProduct.ColorId
                         };
+
+                        SalesVM sale = _mapper.Map<SalesVM>(await ProductsRepository.checkSaleByIdProduct(itemProduct.ProductId ?? -1, (DateTime)newOrder.OdertDate));
+
+                        decimal percentSale = 0;
+                        if (sale != null)
+                        {
+                            percentSale = sale.PercentSale;
+                        }
+
+                        //update until price
+                        newProductOrder.UntilPrice = itemProduct.Product.Price * (100 - percentSale) / 100;
                         await _context.AddAsync(newProductOrder);
                     }
 
@@ -351,40 +318,28 @@ namespace SellingElectronicWebsite.Repository
 
         public async Task<List<OrderPendingVM>> GetByIdCustomer(int idCustomer, string status)
         {
-            var listOrderPending = await _context.OrderPendings
+            var listOrderPendingEnties = await _context.OrderPendings
                                                        .Include(p => p.Customer)
                                                        .Include(p => p.Employee)
                                                        .Where(p => p.Status == status && p.CustomerId == idCustomer)
-                                                       .Select(p => new OrderPendingVM(
-                                                                                       p.OrderPendingId,
-                                                                                       p.Customer.FullName,
-                                                                                       p.Customer.CustomerId,
-                                                                                       p.Employee.EmployeeId,
-                                                                                       p.Employee.FullName,
-                                                                                       p.OdertDate,
-                                                                                       p.Status
-                                                                                       ))
-            .ToListAsync();
+                                                       .OrderByDescending(p => p.OdertDate)
+                                                       .ToListAsync();
+
+            var listOrderPending = _mapper.Map<List<OrderPendingVM>>(listOrderPendingEnties);
+
 
             // add list for order pending item
             foreach (var item in listOrderPending)
             {
-                var listProductOrderPendingVM = await _context.ProductOrderPendings
+                var listProductOrderPending = await _context.ProductOrderPendings
+                                                             .Include(p => p.Color)
+                                                             .Include(p => p.Product.Category)
                                                              .Where(p => p.OrderPendingId == item.OrderPendingId)
                                                              .Include(p => p.Product)
-                                                             .Select(p => new ProductOrderPendingVM(
-                                                                                                p.ProductOrderPendingId,
-                                                                                                p.Product.ProductId,
-                                                                                                p.Product.ProductName,
-                                                                                                p.Amount,
-                                                                                                p.Color.ColorName,
-                                                                                                p.Product.Brand,
-                                                                                                p.Product.Series,
-                                                                                                p.Product.Price,
-                                                                                                p.Product.Category.CategoryName,
-                                                                                                p.Product.MainImg
-                                                                                                ))
                                                              .ToListAsync();
+
+                var listProductOrderPendingVM = _mapper.Map<List<ProductOrderPendingVM>>(listProductOrderPending);
+
                 item.ListProductOrederPending = listProductOrderPendingVM;
             }
             //add sale

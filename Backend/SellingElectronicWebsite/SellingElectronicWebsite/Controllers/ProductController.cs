@@ -56,7 +56,7 @@ namespace SellingElectronicWebsite.Controllers
                 _uow.Commit();
                 return Ok(result );
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 _uow.Rollback();
                 return StatusCode(500, $"Internal server error: {ex.Message}");
@@ -102,9 +102,9 @@ namespace SellingElectronicWebsite.Controllers
                 }
                 return Ok(data); // Return the data in the response
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
             }
         }
         /// <summary>
@@ -127,9 +127,9 @@ namespace SellingElectronicWebsite.Controllers
                 }
                 return Ok(data); // Return the data in the response
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
             }
         }
         /// <summary>
@@ -148,9 +148,9 @@ namespace SellingElectronicWebsite.Controllers
                 }
                 return Ok(data);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
             }
         }
         /// <summary>
@@ -165,9 +165,9 @@ namespace SellingElectronicWebsite.Controllers
                 var count = await _uow.Products.CountProducts();
                 return Ok(count);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
             }
         }
 
@@ -194,9 +194,9 @@ namespace SellingElectronicWebsite.Controllers
                 }
                 return Ok(data);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
             }
         }
 
@@ -211,9 +211,9 @@ namespace SellingElectronicWebsite.Controllers
                 var colors = await _uow.Products.GetAllColor(ProudctId);
                 return Ok(colors);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
 
             }
 
@@ -233,9 +233,9 @@ namespace SellingElectronicWebsite.Controllers
 
                 return Ok(spes);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
 
             }
 
@@ -251,9 +251,27 @@ namespace SellingElectronicWebsite.Controllers
 
                 return Ok(imgs);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
+
+            }
+
+
+        }
+
+        [HttpGet("Discount")]
+        public async Task<IActionResult> GetProductHaveDiscout()
+        {
+            try
+            {
+                var products = await _uow.Products.GetProductHaveDiscount();
+
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
 
             }
 
@@ -274,9 +292,9 @@ namespace SellingElectronicWebsite.Controllers
 
                 return Ok(products);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
 
             }
         }
@@ -296,32 +314,32 @@ namespace SellingElectronicWebsite.Controllers
                 {
                     _uow.Rollback();
 
-                    return BadRequest("The product name already exists.");
+                    return BadRequest(new { message = "Tên sản phẩm đã tồn tại." });
                 }
                 var checkCatagory = await _uow.Products.CategoryExists(model.CategoryId);
                 if (checkCatagory == false)
                 {
                     _uow.Rollback();
 
-                    return BadRequest("The category id don't already exists.");
+                    return BadRequest(new { message = "Danh mục không tồn tại." });
                 }
                 if (model.Price < 0)
                 {
                     _uow.Rollback();
 
-                    return BadRequest("The price invalid.");
+                    return BadRequest(new { message = "Giá không hợp lệ." });
 
                 }
                 var result = await _uow.Products.Add(model);
 
                 await _uow.Save();
                 _uow.Commit();
-                return Ok(result);
+                return Ok(result.ProductId);
             }
-            catch
+            catch (Exception ex)
             {
                 _uow.Rollback();
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -344,10 +362,10 @@ namespace SellingElectronicWebsite.Controllers
 
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
                 _uow.Rollback();
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
 
             }
 
@@ -371,10 +389,10 @@ namespace SellingElectronicWebsite.Controllers
 
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
                 _uow.Rollback();
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
 
             }
 
@@ -397,10 +415,10 @@ namespace SellingElectronicWebsite.Controllers
 
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
                 _uow.Rollback();
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
 
             }
 
@@ -423,10 +441,10 @@ namespace SellingElectronicWebsite.Controllers
 
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
                 _uow.Rollback();
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
 
             }
 
@@ -452,7 +470,7 @@ namespace SellingElectronicWebsite.Controllers
                 {
                     _uow.Rollback();
 
-                    return BadRequest("The product name already exists.");
+                    return BadRequest(new { message = "Tên sản phẩm đã tồn tại." });
                 }
 
                 var checkCatagory = await _uow.Products.CategoryExists(model.CategoryId);
@@ -460,14 +478,14 @@ namespace SellingElectronicWebsite.Controllers
                 {
                     _uow.Rollback();
 
-                    return BadRequest("The category id don't already exists.");
+                    return BadRequest(new { message = "Danh mục không tồn tại." });
                 }
 
                 if (model.Price < 0)
                 {
                     _uow.Rollback();
 
-                    return BadRequest("The price invalid.");
+                    return BadRequest(new { message = "Giá không hợp lệ." });
 
                 }
 
@@ -483,11 +501,11 @@ namespace SellingElectronicWebsite.Controllers
                 _uow.Commit();
                 return Ok(result);
             }
-            catch
+            catch (Exception ex)
             {
                 _uow.Rollback();
 
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message =ex.Message});
 
             }
         }
@@ -511,10 +529,10 @@ namespace SellingElectronicWebsite.Controllers
                 _uow.Commit();
                 return Ok(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message =ex.Message});
 
             }
         }
@@ -533,10 +551,10 @@ namespace SellingElectronicWebsite.Controllers
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message =ex.Message});
 
             }
         }
@@ -566,10 +584,10 @@ namespace SellingElectronicWebsite.Controllers
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message =ex.Message});
 
             }
         }
@@ -598,10 +616,10 @@ namespace SellingElectronicWebsite.Controllers
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message =ex.Message});
 
             }
         }
@@ -620,10 +638,10 @@ namespace SellingElectronicWebsite.Controllers
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message =ex.Message});
 
             }
         }

@@ -19,6 +19,8 @@ public partial class Product
 
     public string? MainImg { get; set; }
 
+    public string? TypeImg { get; set; }
+
     public virtual Category? Category { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();

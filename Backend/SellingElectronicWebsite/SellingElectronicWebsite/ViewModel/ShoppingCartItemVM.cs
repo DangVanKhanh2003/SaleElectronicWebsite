@@ -13,6 +13,9 @@
         public int Amount { get; set; }
 
         public string ColorName { get; set; }
+        public string ColorCode { get; set; }
+
+        public int ColorId { get; set; }
 
         public string Brand { get; set; } = null!;
 
@@ -26,7 +29,8 @@
         public SalesVM sale { get; set; }
 
         public ShoppingCartItemVM() { }
-        public ShoppingCartItemVM(int shoppingCartId, int productId, int customerId, string productName, int amount, string colorName, string brand, string series, decimal price, string categoryName, string? mainImg)
+        public ShoppingCartItemVM(int shoppingCartId, int productId, int customerId, string productName, int amount,
+            string colorName, string brand, string series, decimal price, string categoryName, string? mainImg, int colorId, string colorCode)
         {
             ShoppingCartItemId = shoppingCartId;
             CustomerId = customerId;
@@ -39,6 +43,9 @@
             Price = price;
             CategoryName = categoryName;
             MainImg = mainImg;
+            ColorId = colorId;
+            ColorCode = colorCode;
+
         }
     }
 }

@@ -15,7 +15,9 @@ namespace SellingElectronicWebsite.Repository
         Task<OrderVM> OderOffline(OrderOfflineModel model);
         Task<OrderVM> ExportOrder(int idOrder, int employeeId);
         Task<OrderVM> CancelOrder(int idOrder, int employeeId);
+        Task<OrderVM> GetById(int id);
 
-        
+
+
     }
 }

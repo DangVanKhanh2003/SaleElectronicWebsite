@@ -12,12 +12,11 @@ public partial class AccountEmp
     public string Password { get; set; } = null!;
 
     public Guid? TypeAccId { get; set; }
-
     public string Email { get; set; } = null!;
 
     public virtual Employee Employee { get; set; } = null!;
 
+    public virtual TypeAccount? TypeAcc { get; set; }
     public virtual ICollection<RefreshTokenEmployee> RefreshTokenEmployees { get; set; } = new List<RefreshTokenEmployee>();
 
-    public virtual TypeAccount? TypeAcc { get; set; }
 }

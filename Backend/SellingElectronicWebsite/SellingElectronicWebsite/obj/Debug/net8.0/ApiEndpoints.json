@@ -116,9 +116,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "SellingElectronicWebsite.Controllers.Employee.CategoryControler",
+    "ContainingType": "SellingElectronicWebsite.Controllers.Employee.CategoryController",
     "Method": "GetAll",
-    "RelativePath": "api/CategoryControler",
+    "RelativePath": "api/Category",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -126,9 +126,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "SellingElectronicWebsite.Controllers.Employee.CategoryControler",
+    "ContainingType": "SellingElectronicWebsite.Controllers.Employee.CategoryController",
     "Method": "Add",
-    "RelativePath": "api/CategoryControler",
+    "RelativePath": "api/Category",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -142,9 +142,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "SellingElectronicWebsite.Controllers.Employee.CategoryControler",
+    "ContainingType": "SellingElectronicWebsite.Controllers.Employee.CategoryController",
     "Method": "GetById",
-    "RelativePath": "api/CategoryControler/{id}",
+    "RelativePath": "api/Category/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -158,9 +158,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "SellingElectronicWebsite.Controllers.Employee.CategoryControler",
+    "ContainingType": "SellingElectronicWebsite.Controllers.Employee.CategoryController",
     "Method": "Update",
-    "RelativePath": "api/CategoryControler/{id}",
+    "RelativePath": "api/Category/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -179,9 +179,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "SellingElectronicWebsite.Controllers.Employee.CategoryControler",
+    "ContainingType": "SellingElectronicWebsite.Controllers.Employee.CategoryController",
     "Method": "Delete",
-    "RelativePath": "api/CategoryControler/{id}",
+    "RelativePath": "api/Category/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -660,6 +660,22 @@
   },
   {
     "ContainingType": "SellingElectronicWebsite.Controllers.Employee.OrderController",
+    "Method": "GetByIdOrder",
+    "RelativePath": "api/Order/{idOrder}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idOrder",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SellingElectronicWebsite.Controllers.Employee.OrderController",
     "Method": "CancelOrder",
     "RelativePath": "api/Order/Cancel",
     "HttpMethod": "PUT",
@@ -682,13 +698,13 @@
   {
     "ContainingType": "SellingElectronicWebsite.Controllers.Employee.OrderController",
     "Method": "GetByIdCustomer",
-    "RelativePath": "api/Order/customer/{idCustomer}",
+    "RelativePath": "api/Order/customer/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "idCustomer",
+        "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
       },
@@ -1222,6 +1238,16 @@
   },
   {
     "ContainingType": "SellingElectronicWebsite.Controllers.ProductController",
+    "Method": "GetProductHaveDiscout",
+    "RelativePath": "api/Product/Discount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SellingElectronicWebsite.Controllers.ProductController",
     "Method": "getImage",
     "RelativePath": "api/Product/get-image",
     "HttpMethod": "GET",
@@ -1454,6 +1480,11 @@
         "Name": "idShoppingCartItem",
         "Type": "System.Int32",
         "IsRequired": true
+      },
+      {
+        "Name": "colorId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

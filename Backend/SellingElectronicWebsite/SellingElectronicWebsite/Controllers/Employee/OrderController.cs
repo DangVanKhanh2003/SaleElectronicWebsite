@@ -35,7 +35,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
         /// <summary>
@@ -76,7 +76,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
         /// <summary>
@@ -95,7 +95,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -104,20 +104,35 @@ namespace SellingElectronicWebsite.Controllers.Employee
         /// </summary>
         /// <param name="status">value: "pending"/"cancel"/"approve". Default = "pending"</param>
 
-        [HttpGet("customer/{idCustomer}")]
-        public async Task<IActionResult> GetByIdCustomer(int idCustomer, string status = "pending")
+        [HttpGet("customer/{id}")]
+        public async Task<IActionResult> GetByIdCustomer(int id, string status = "pending")
         {
             try
             {
-                var result = await _uow.Orders.GetByIdCustomer(idCustomer, status);
+                var result = await _uow.Orders.GetByIdCustomer(id, status);
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
+        [HttpGet("{idOrder}")]
+        public async Task<IActionResult> GetByIdOrder(int idOrder)
+        {
+
+            try
+            {
+                var item = await _uow.Orders.GetById(idOrder);
+                return Ok(item);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+        }
 
         /// <summary>
         /// Export order
@@ -139,7 +154,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             catch(Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -163,7 +178,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -186,7 +201,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

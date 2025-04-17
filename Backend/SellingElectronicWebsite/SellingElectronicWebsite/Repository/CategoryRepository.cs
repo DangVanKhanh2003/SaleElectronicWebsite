@@ -28,6 +28,13 @@ namespace SellingElectronicWebsite.Repository
         public async Task<bool> Delete(int id)
         {
             var item = await _context.Categories.FindAsync(id);
+
+            var existProduct = await _context.Products.Where(p => p.CategoryId == id).ToListAsync();
+
+            if (existProduct.Any())
+            {
+                throw new Exception("Tồn tại sản phẩm có danh mục này!");
+            }
             if(item != null)
             {
                 _context.Remove(item);

@@ -36,7 +36,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -59,7 +59,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -89,7 +89,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -132,7 +132,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             {
                 _uow.Rollback();
 
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -165,7 +165,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }

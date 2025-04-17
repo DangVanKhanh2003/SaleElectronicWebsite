@@ -7,7 +7,7 @@ namespace SellingElectronicWebsite.Repository
     {
         Task<List<ShoppingCartItemVM>> GetByIdCustomer(int idCustomer);
         Task<bool> Add(ShoppingCartItemModel model);
-        Task<bool> UpdateAmount(int amount, int idShoppingCart);
+        Task<bool> UpdateAmount(int amount, int idShoppingCartItem, int colorId);
         Task<bool> Delete(int idShoppingCart);
         Task<bool> DeleteAllByIdCustomer(int idCustomer);
     }

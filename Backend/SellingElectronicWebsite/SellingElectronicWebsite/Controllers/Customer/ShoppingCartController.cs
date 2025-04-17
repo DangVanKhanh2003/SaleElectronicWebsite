@@ -36,7 +36,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -58,7 +58,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -66,13 +66,13 @@ namespace SellingElectronicWebsite.Controllers.Customer
         /// update amount for item in shoppingCart by idShoppingCart
         /// </summary>
         [HttpPut("{idShoppingCartItem}")]
-        public async Task<IActionResult> Update(int amount, int idShoppingCartItem)
+        public async Task<IActionResult> Update(int amount, int idShoppingCartItem, int colorId)
         {
             try
             {
                 _uow.CreateTransaction();
                 //update amount for item in shoppingCart by idShoppingCart
-                var check = await _uow.ShoppingCarts.UpdateAmount(amount, idShoppingCartItem);
+                var check = await _uow.ShoppingCarts.UpdateAmount(amount, idShoppingCartItem, colorId);
                 await _uow.Save();
                 _uow.Commit();
                 return Ok(check);
@@ -80,7 +80,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -104,7 +104,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -128,7 +128,7 @@ namespace SellingElectronicWebsite.Controllers.Customer
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }

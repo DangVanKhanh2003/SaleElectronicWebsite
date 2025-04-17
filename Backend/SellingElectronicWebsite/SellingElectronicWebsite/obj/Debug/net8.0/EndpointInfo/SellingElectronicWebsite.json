@@ -200,10 +200,10 @@
         }
       }
     },
-    "/api/CategoryControler": {
+    "/api/Category": {
       "get": {
         "tags": [
-          "CategoryControler"
+          "Category"
         ],
         "summary": "Get all category",
         "responses": {
@@ -214,7 +214,7 @@
       },
       "post": {
         "tags": [
-          "CategoryControler"
+          "Category"
         ],
         "summary": "Add Category",
         "requestBody": {
@@ -244,10 +244,10 @@
         }
       }
     },
-    "/api/CategoryControler/{id}": {
+    "/api/Category/{id}": {
       "get": {
         "tags": [
-          "CategoryControler"
+          "Category"
         ],
         "summary": "get category by id",
         "parameters": [
@@ -270,7 +270,7 @@
       },
       "put": {
         "tags": [
-          "CategoryControler"
+          "Category"
         ],
         "summary": "Update category by id",
         "parameters": [
@@ -313,7 +313,7 @@
       },
       "delete": {
         "tags": [
-          "CategoryControler"
+          "Category"
         ],
         "summary": "Delete catory by id",
         "parameters": [
@@ -1222,7 +1222,7 @@
         }
       }
     },
-    "/api/Order/customer/{idCustomer}": {
+    "/api/Order/customer/{id}": {
       "get": {
         "tags": [
           "Order"
@@ -1230,7 +1230,7 @@
         "summary": "Get all order by id customer",
         "parameters": [
           {
-            "name": "idCustomer",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -1245,6 +1245,29 @@
             "schema": {
               "type": "string",
               "default": "pending"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Order/{idOrder}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "parameters": [
+          {
+            "name": "idOrder",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -1958,6 +1981,18 @@
         }
       }
     },
+    "/api/Product/Discount": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Product/Search": {
       "get": {
         "tags": [
@@ -2516,6 +2551,14 @@
             "name": "idShoppingCartItem",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "colorId",
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3104,6 +3147,10 @@
           "colorName": {
             "type": "string",
             "nullable": true
+          },
+          "colorCode": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3244,6 +3291,10 @@
             "nullable": true
           },
           "mainImg": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeImg": {
             "type": "string",
             "nullable": true
           }

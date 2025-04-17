@@ -13,9 +13,10 @@
 
         public int? CategoryId { get; set; }
         public string? MainImg { get; set; }
+        public string? TypeImg { get; set; }
 
         public ProductModel() { }
-        public ProductModel(string productName, string brand, string series, decimal price, int? categoryId, string mainImg)
+        public ProductModel(string productName, string brand, string series, decimal price, int? categoryId, string mainImg, string typeImg)
         {
             ProductName = productName;
             Brand = brand;
@@ -23,6 +24,7 @@
             Price = price;
             CategoryId = categoryId;
             MainImg = mainImg;
+            TypeImg = typeImg;
         }   
     }
 }

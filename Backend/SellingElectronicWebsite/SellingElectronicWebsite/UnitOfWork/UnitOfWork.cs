@@ -13,6 +13,8 @@ namespace SellingElectronicWebsite.UnitOfWork
         public SellingElectronicsContext Context = null;
         private IDbContextTransaction? _objTran = null;
         private IConfiguration _configuration;
+        private readonly IDbContextFactory<SellingElectronicsContext> _contextFactory;
+
 
         public ProductsRepository Products { get; private set; }
         public ColorsRepository Colors { get; private set; }
@@ -30,11 +32,13 @@ namespace SellingElectronicWebsite.UnitOfWork
         public CommentRepository Comments { get; private set; }
         public StatsRepository Stats { get; private set; }
 
-        public UnitOfWork(SellingElectronicsContext _Context, IMapper mapper, IConfiguration configuration)
+        public UnitOfWork(SellingElectronicsContext _Context, IMapper mapper, IDbContextFactory<SellingElectronicsContext> contextFactory,IConfiguration configuration)
         {
             Context = _Context;
             _configuration = configuration;
-            Products = new ProductsRepository(Context, mapper);
+            _contextFactory = contextFactory;
+
+            Products = new ProductsRepository(Context, mapper, _contextFactory);
             Colors = new ColorsRepository(Context, mapper);
             Categories = new CategoryRepository(Context, mapper);
             Sales = new SalesRepository(Context, mapper);

@@ -44,7 +44,7 @@ namespace SellingElectronicWebsite.Repository
             }
             var Colors = await _context.ImageProducts.Include(p => p.Color)
                                                          .Where(p => p.ProductId == model.ProductId && p.ColorId == model.ColorId)
-                                                         .Select(p => new ColorVM(p.ColorId, p.Color.ColorName)).Distinct().FirstOrDefaultAsync();
+                                                         .Select(p => new ColorVM(p.ColorId ?? 0, p.Color.ColorName, p.Color.ColorCode)).Distinct().FirstOrDefaultAsync();
             if (Colors == null)
             {
                 throw new Exception("Product haven't color by id color: " + model.ColorId + " !");
@@ -81,21 +81,23 @@ namespace SellingElectronicWebsite.Repository
                                 .Include(p => p.Product)
                                 .Include(p => p.Color)
                                 .Where(p => p.CustomerId == idCustomer)
-                                .Select(p => new ShoppingCartItemVM(
-                                                            p.ShoppingCartId,
-                                                            p.ProductId,
-                                                            p.CustomerId,
-                                                            p.Product.ProductName,
-                                                            p.Amount,
-                                                            p.Color.ColorName,
-                                                            p.Product.Brand,
-                                                            p.Product.Series,
-                                                            p.Product.Price,
-                                                            p.Product.Category.CategoryName,
-                                                            p.Product.MainImg
-                                ))
+                                //.Select(p => new ShoppingCartItemVM(
+                                //                            p.ShoppingCartId,
+                                //                            p.ProductId,
+                                //                            p.CustomerId,
+                                //                            p.Product.ProductName,
+                                //                            p.Amount,
+                                //                            p.Color.ColorName,
+                                //                            p.Product.Brand,
+                                //                            p.Product.Series,
+                                //                            p.Product.Price,
+                                //                            p.Product.Category.CategoryName,
+                                //                            p.Product.MainImg,
+                                //                            p.ColorId
+                                //))
                                 .ToListAsync();
-            foreach (var item in items)
+            var itemVM = _mapper.Map<List<ShoppingCartItemVM>>(items);
+            foreach (var item in itemVM)
             {
                 SalesVM sale = _mapper.Map<SalesVM>(await ProductsRepository.checkSaleByIdProduct(item.ProductId, DateTime.Now));
                 if (sale != null)
@@ -104,13 +106,13 @@ namespace SellingElectronicWebsite.Repository
                 }
             }
 
-            return items;
+            return itemVM;
         }
 
        /// <summary>
        /// update amount for item in shoppingCart by idShoppingCart
        /// </summary>
-        public async Task<bool> UpdateAmount(int amount, int idShoppingCartItem)
+        public async Task<bool> UpdateAmount(int amount, int idShoppingCartItem, int colorId)
         {
             
             var item = await _context.ShoppingCarts.Where(p => p.ShoppingCartId == idShoppingCartItem).FirstOrDefaultAsync();
@@ -124,6 +126,7 @@ namespace SellingElectronicWebsite.Repository
                 throw new Exception("Amount invalid");
             }
             item.Amount = amount;
+            item.ColorId = colorId;
             _context.ShoppingCarts.Update(item);
             return true;
         }

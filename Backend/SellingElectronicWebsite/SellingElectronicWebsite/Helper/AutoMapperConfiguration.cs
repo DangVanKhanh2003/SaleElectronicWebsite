@@ -38,8 +38,15 @@ namespace SellingElectronicWebsite.Helper
             CreateMap<AddressCustomer, AddressBookVM>().ReverseMap();
             CreateMap<ShoppingCart, ShoppingCartItemModel>().ReverseMap();
             CreateMap<ShoppingCart, ShoppingCartItemVM>()
+                .ForMember(dest => dest.ShoppingCartItemId, opt => opt.MapFrom(src => src.ShoppingCartId))
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
                 .ForMember(dest => dest.ColorName, opt => opt.MapFrom(src => src.Color.ColorName))
+                .ForMember(dest => dest.ColorCode, opt => opt.MapFrom(src => src.Color.ColorCode))
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Product.Category.CategoryName))
+                .ForMember(dest => dest.Brand, opt => opt.MapFrom(src => src.Product.Brand))
+                .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.Product.Series))
+                .ForMember(dest => dest.MainImg, opt => opt.MapFrom(src => src.Product.MainImg))
+                .ForMember(dest => dest.Price , opt => opt.MapFrom(src => src.Product.Price))
                 .ReverseMap();
             CreateMap<OrderPending, OrderPendingModel>().ReverseMap();
             CreateMap<OrderPending, OrderPendingVM>()
@@ -50,6 +57,12 @@ namespace SellingElectronicWebsite.Helper
             CreateMap<ProductOrderPending, ProductOrderPendingVM>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
                 .ForMember(dest => dest.ColorName, opt => opt.MapFrom(src => src.Color.ColorName))
+                .ForMember(dest => dest.Brand, opt => opt.MapFrom(src => src.Product.Brand))
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Product.Category.CategoryName))
+                .ForMember(dest => dest.MainImg, opt => opt.MapFrom(src => src.Product.MainImg))
+                .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.Product.Series))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product.Price))
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Product.Category.CategoryName))
                 .ReverseMap();
             CreateMap<StoresProduct, StoreProductModel>().ReverseMap();
             CreateMap<StoresProduct, StoreProductVM>()

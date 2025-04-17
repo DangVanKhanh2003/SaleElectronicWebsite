@@ -73,6 +73,8 @@ builder.Services.AddSwaggerGen(s =>
     });
 });
 
+builder.Services.AddDbContextFactory<SellingElectronicsContext>();
+
 // Add sql server
 builder.Services.AddDbContext<SellingElectronicsContext>(options =>
 {

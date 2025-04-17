@@ -167,7 +167,7 @@
             addition amount to amount of element in this shopping cart. The sale of product automatic addition when shopping cart item add new. 
             </summary>
         </member>
-        <member name="M:SellingElectronicWebsite.Controllers.Customer.ShoppingCartController.Update(System.Int32,System.Int32)">
+        <member name="M:SellingElectronicWebsite.Controllers.Customer.ShoppingCartController.Update(System.Int32,System.Int32,System.Int32)">
             <summary>
             update amount for item in shoppingCart by idShoppingCart
             </summary>
@@ -186,27 +186,27 @@
             <param name="idCustomer"></param>
             <returns></returns>
         </member>
-        <member name="M:SellingElectronicWebsite.Controllers.Employee.CategoryControler.GetAll">
+        <member name="M:SellingElectronicWebsite.Controllers.Employee.CategoryController.GetAll">
             <summary>
             Get all category
             </summary>
             <returns></returns>
         </member>
-        <member name="M:SellingElectronicWebsite.Controllers.Employee.CategoryControler.GetById(System.Int32)">
+        <member name="M:SellingElectronicWebsite.Controllers.Employee.CategoryController.GetById(System.Int32)">
             <summary>
             get category by id
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:SellingElectronicWebsite.Controllers.Employee.CategoryControler.Add(SellingElectronicWebsite.Model.CategoryModel)">
+        <member name="M:SellingElectronicWebsite.Controllers.Employee.CategoryController.Add(SellingElectronicWebsite.Model.CategoryModel)">
             <summary>
             Add Category
             </summary>
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:SellingElectronicWebsite.Controllers.Employee.CategoryControler.Update(SellingElectronicWebsite.Model.CategoryModel,System.Int32)">
+        <member name="M:SellingElectronicWebsite.Controllers.Employee.CategoryController.Update(SellingElectronicWebsite.Model.CategoryModel,System.Int32)">
             <summary>
             Update category by id 
             </summary>
@@ -214,7 +214,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:SellingElectronicWebsite.Controllers.Employee.CategoryControler.Delete(System.Int32)">
+        <member name="M:SellingElectronicWebsite.Controllers.Employee.CategoryController.Delete(System.Int32)">
             <summary>
             Delete catory by id
             </summary>
@@ -745,7 +745,7 @@
             if exist element(in shopping cart) same idCustomer, idProduct, idColor with this item => addition amount to amount ofelement in this shopping cart.
             </summary>
         </member>
-        <member name="M:SellingElectronicWebsite.Repository.ShoppingCartRepository.UpdateAmount(System.Int32,System.Int32)">
+        <member name="M:SellingElectronicWebsite.Repository.ShoppingCartRepository.UpdateAmount(System.Int32,System.Int32,System.Int32)">
             <summary>
             update amount for item in shoppingCart by idShoppingCart
             </summary>

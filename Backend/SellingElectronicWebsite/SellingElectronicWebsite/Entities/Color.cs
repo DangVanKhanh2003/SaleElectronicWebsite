@@ -7,7 +7,9 @@ public partial class Color
 {
     public int ColorId { get; set; }
 
-    public string ColorName { get; set; } = null!;
+    public string? ColorName { get; set; }
+
+    public string? ColorCode { get; set; }
 
     public virtual ICollection<ImageProduct> ImageProducts { get; set; } = new List<ImageProduct>();
 

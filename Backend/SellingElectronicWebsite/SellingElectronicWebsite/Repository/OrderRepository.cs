@@ -337,15 +337,6 @@ namespace SellingElectronicWebsite.Repository
             {
                 SalesVM sale = _mapper.Map<SalesVM>(await ProductsRepository.checkSaleByIdProduct(itemProduct.Product.ProductId, (DateTime)orderVM.OdertDate));
 
-                decimal percentSale = 0;
-                if (sale != null)
-                {
-                    percentSale = sale.PercentSale;
-                }
-
-                //update until price
-                itemProduct.UntilPrice = itemProduct.Product.Price * (100 - percentSale) / 100;
-
                 //map productOrder to productOrderVM
                 ProductOrderVM productOrderVM = _mapper.Map<ProductOrderVM>(itemProduct);
                 productOrderVM.Product.sale = sale;
@@ -583,7 +574,39 @@ namespace SellingElectronicWebsite.Repository
             
             return orderVM;
         }
+        public async Task<OrderVM> GetById(int id)
+        {
+            var OrderEnties = await _context.Orders
+                                            .Include(p => p.Customer)
+                                            .Include(p => p.Employee)
+                                            .Where(p => p.OrderId == id)
+                                            .FirstOrDefaultAsync();
+            var Order = _mapper.Map<OrderVM>(OrderEnties);
 
+            if (Order == null)
+            {
+                throw new Exception("Không tồn tại order với id: " + id);
+            }
+            // add list for item order pending
+            var listProductOrder = await _context.ProductOrders
+                                                             .Include(p => p.Color)
+                                                             .Where(p => p.OrderId == Order.OrderId)
+                                                             .Include(p => p.Product)
+                                                             .ToListAsync();
+            var listProductOrderVM = _mapper.Map<List<ProductOrderVM>>(listProductOrder);
+
+            // add sale for product
+            foreach (var itemProduct in listProductOrderVM)
+            {
+                SalesVM sale = _mapper.Map<SalesVM>(await ProductsRepository.checkSaleByIdProduct(itemProduct.Product.ProductId, (DateTime)Order.OdertDate));
+                if (sale != null)
+                {
+                    itemProduct.Product.sale = sale;
+                }
+            }
+            Order.ListProductOrder = listProductOrderVM;
+            return Order;
+        }
         public async Task<List<OrderVM>> GetByIdCustomer(int idCustomer, string status)
         {
             var listOrder = await _context.Orders
@@ -592,6 +615,7 @@ namespace SellingElectronicWebsite.Repository
                                                 .Include(p => p.Store)
                                                 .Include(p => p.Store.Address)
                                                 .Where(p => p.Status == status && p.CustomerId == idCustomer)
+                                                .OrderByDescending(p => p.OdertDate)
                                                 .ToListAsync();
 
             

@@ -36,9 +36,9 @@ namespace SellingElectronicWebsite.Controllers.Employee
                 }
                 return Ok(data); // Return the data in the response
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -58,9 +58,9 @@ namespace SellingElectronicWebsite.Controllers.Employee
                 }
                 return Ok(data);
             }
-            catch
+            catch(Exception ex) 
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -93,10 +93,10 @@ namespace SellingElectronicWebsite.Controllers.Employee
                 _uow.Commit();
                 return Ok(result);
             }
-            catch
+            catch (Exception ex)
             {
                 _uow.Rollback();
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -136,11 +136,11 @@ namespace SellingElectronicWebsite.Controllers.Employee
                 _uow.Commit();
                 return Ok(result);
             }
-            catch
+            catch (Exception ex)
             {
                 _uow.Rollback();
 
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -175,7 +175,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.ToString());
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -197,9 +197,9 @@ namespace SellingElectronicWebsite.Controllers.Employee
                 }
                 return Ok(data);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -221,9 +221,9 @@ namespace SellingElectronicWebsite.Controllers.Employee
                 }
                 return Ok(data);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -245,9 +245,9 @@ namespace SellingElectronicWebsite.Controllers.Employee
                 }
                 return Ok(data);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new { message = ex.Message });
             }
         }
         /// <summary>
@@ -269,12 +269,12 @@ namespace SellingElectronicWebsite.Controllers.Employee
                 var result = await _uow.Store.AddStoreProduct(idProduct, idStore, amountAdd, idColor);
                 await _uow.Save();
                 _uow.Commit();
-                return Ok(result);
+                return Ok(result.Amount);
             }
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -298,12 +298,12 @@ namespace SellingElectronicWebsite.Controllers.Employee
                 await _uow.Save();
 
                 _uow.Commit();
-                return Ok(result);
+                return Ok(result.Amount);
             }
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }
@@ -333,7 +333,7 @@ namespace SellingElectronicWebsite.Controllers.Employee
             catch (Exception ex)
             {
                 _uow.Rollback();
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return BadRequest(new { message = ex.Message });
 
             }
         }

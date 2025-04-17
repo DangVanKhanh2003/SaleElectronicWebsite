@@ -1,4 +1,5 @@
-﻿using SellingElectronicWebsite.Model;
+﻿using SellingElectronicWebsite.Entities;
+using SellingElectronicWebsite.Model;
 using SellingElectronicWebsite.ViewModel;
 
 namespace SellingElectronicWebsite.Repository
@@ -12,7 +13,7 @@ namespace SellingElectronicWebsite.Repository
         Task<List<ProductVM>> SearchProductByName(string nameProduct);
 
         Task<int> CountProducts();
-        Task<bool> Add(ProductModel model);
+        Task<Product> Add(ProductModel model);
         Task<bool> Update(ProductModel model, int id);
         Task<bool> Delete(int id);
         Task<bool> CategoryExists(int? categoryId);

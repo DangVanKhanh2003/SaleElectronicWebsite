@@ -15,12 +15,13 @@ namespace SellingElectronicWebsite.ViewModel
 
         public CategoryVM Category { get; set; }
         public string? MainImg { get; set; }
+        public string? TypeImg { get; set; }
 
        public SalesVM sale {  get; set; }
         public ProductVM() {
         }
         public ProductVM(int productId, string productName, string brand, string series, decimal price,
-            CategoryVM? Category, string? mainImg)
+            CategoryVM? Category, string? mainImg, string? typeImg)
         {
             ProductId = productId;
             ProductName = productName;
@@ -30,6 +31,7 @@ namespace SellingElectronicWebsite.ViewModel
             this.Category = Category;
             MainImg = mainImg; 
             sale = null;
+            TypeImg = typeImg;
 
         }
     }

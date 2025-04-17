@@ -2,6 +2,7 @@
 using Azure.Core;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using SellingElectronicWebsite.Entities;
 using SellingElectronicWebsite.Helper;
 using SellingElectronicWebsite.Model;
@@ -18,17 +19,21 @@ namespace SellingElectronicWebsite.Repository
         private SellingElectronicsContext _context;
         private static SellingElectronicsContext _staticContext = new SellingElectronicsContext();
         private readonly IMapper _mapper;
+        private static IDbContextFactory<SellingElectronicsContext> _contextFactory;
 
 
-        public ProductsRepository(SellingElectronicsContext context, IMapper mapper)
+        public ProductsRepository(SellingElectronicsContext context, IMapper mapper, IDbContextFactory<SellingElectronicsContext> contextFactory)
         {
+            _contextFactory = contextFactory;
             _context = context;
             _mapper = mapper;
 
         }
         public async static Task<Sale> checkSaleByIdProduct(int idProduct, DateTime time)
         {
-            var sale = await _staticContext.Sales.Where(s => s.ProductId == idProduct && time <= s.EndAt && time >= s.StartAt).FirstOrDefaultAsync();
+            using var context = _contextFactory.CreateDbContext();
+
+            var sale = await context.Sales.Where(s => s.ProductId == idProduct && time <= s.EndAt && time >= s.StartAt).FirstOrDefaultAsync();
             return sale;
         }
         public async Task<bool> CategoryExists(int? categoryId)
@@ -38,18 +43,18 @@ namespace SellingElectronicWebsite.Repository
             return await _context.Categories.AnyAsync(c => c.CategoryId == categoryId);
         }
 
-        public async Task<bool> Add(ProductModel model)
+        public async Task<Product> Add(ProductModel model)
         {
             Product p = _mapper.Map<Product>(model);
             await _context.Products.AddAsync(p);
-            return true;
+            return p;
         }
 
         public async Task<bool> Delete(int id)
         {
             //check product at store
             List<int> stores = await _context.StoresProducts
-                                                        .Where(p => p.ProductId == id)
+                                                        .Where(p => p.ProductId == id && p.Amount > 0)
                                                         .Select(p => p.StoreId)
                                                         .ToListAsync();
             if(stores.Count() > 0)
@@ -91,6 +96,7 @@ namespace SellingElectronicWebsite.Repository
                 switch (sortBy)
                 {
                     case "name_desc": products = products.OrderByDescending(p => p.ProductName).ToList(); break;
+                    case "name_asc": products = products.OrderByDescending(p => p.ProductName).ToList(); break;
                     case "price_asc": products = products.OrderBy(p => p.Price).ToList(); break;
                     case "price_desc": products = products.OrderByDescending(p => p.Price).ToList(); break;
                 }
@@ -121,12 +127,37 @@ namespace SellingElectronicWebsite.Repository
                 switch (sortBy)
                 {
                     case "name_desc": products = products.OrderByDescending(p => p.ProductName).ToList(); break;
+                    case "name_asc": products = products.OrderByDescending(p => p.ProductName).ToList(); break;
                     case "price_asc": products = products.OrderBy(p => p.Price).ToList(); break;
                     case "price_desc": products = products.OrderByDescending(p => p.Price).ToList(); break;
                 }
             }
             return products;
         }
+
+        public async Task<List<ProductVM>> GetProductHaveDiscount()
+        {
+            var list = await _context.Products
+                    .ToListAsync();
+            var products = _mapper.Map<List<ProductVM>>(list);
+
+            foreach (var item in products)
+            {
+                SalesVM sale = _mapper.Map<SalesVM>(await checkSaleByIdProduct(item.ProductId, DateTime.Now));
+                if (sale != null)
+                {
+                    item.sale = sale;
+                }
+                else
+                {
+                    item.sale = null;
+                }
+                    
+            }
+            
+            return products.Where(p => p.sale != null).ToList();
+        }
+
         public async Task<List<ProductVM>> GetByPage(int pageIndex, int pageSize, string sortBy)
         {
             var list = await _context.Products
@@ -148,6 +179,7 @@ namespace SellingElectronicWebsite.Repository
                 switch (sortBy)
                 {
                     case "name_desc": products = products.OrderByDescending(p => p.ProductName).ToList(); break;
+                    case "name_asc": products = products.OrderByDescending(p => p.ProductName).ToList(); break;
                     case "price_asc": products = products.OrderBy(p => p.Price).ToList(); break;
                     case "price_desc": products = products.OrderByDescending(p => p.Price).ToList(); break;
                 }
@@ -218,7 +250,7 @@ namespace SellingElectronicWebsite.Repository
         {
             var Colors = await _context.ImageProducts.Include(p => p.Color)
                                                           .Where(p => p.ProductId == id)
-                                                          .Select(p => new ColorVM(p.ColorId, p.Color.ColorName)).Distinct().ToListAsync();
+                                                          .Select(p => new ColorVM(p.ColorId ?? 0, p.Color.ColorName, p.Color.ColorCode)).Distinct().ToListAsync();
             return Colors;
         }
 

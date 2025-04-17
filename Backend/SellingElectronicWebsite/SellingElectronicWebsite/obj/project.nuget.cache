@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vtAagDSv064=",
+  "dgSpecHash": "kQD2OZoB97U=",
   "success": true,
-  "projectFilePath": "C:\\Users\\khanh084\\Desktop\\SaleElectronicWebsit\\Backend\\SellingElectronicWebsite\\SellingElectronicWebsite\\SellingElectronicWebsite.csproj",
+  "projectFilePath": "C:\\Users\\khanh084\\Desktop\\DoAn-main\\DoAn-main\\Backend\\SellingElectronicWebsite\\SellingElectronicWebsite\\SellingElectronicWebsite.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\khanh084\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\khanh084\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
