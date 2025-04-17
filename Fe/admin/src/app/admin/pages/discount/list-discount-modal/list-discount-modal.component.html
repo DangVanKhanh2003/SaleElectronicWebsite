@@ -1,0 +1,48 @@
+<div class="modal-backdrop" *ngIf="isVisible" (click)="closeModal()"></div>
+<div class="modal fade show d-block" *ngIf="isVisible" tabindex="-1" aria-labelledby="listDiscountModalLabel" style="z-index: 1050;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title" id="listDiscountModalLabel">Discounts for {{ product?.productName }}</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeModal()"></button>
+      </div>
+
+      <div class="modal-body">
+        <div *ngIf="!product?.sale" class="alert alert-info">
+          No discounts available for this product.
+        </div>
+
+        <div *ngIf="product?.sale" class="table-responsive">
+          <table class="table table-striped table-hover border">
+            <thead class="table-light">
+              <tr>
+                <th>Sale ID</th>
+                <th>Discount (%)</th>
+                <th>Discounted Price</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Products Available</th>
+                <th>Products Sold</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sale ngForOf product!.sale">
+                <td>{{ sale.saleId }}</td>
+                <td>{{ sale.percentSale }}%</td>
+                <td>${{ calculateDiscountedPrice(product?.price, sale.percentSale).toFixed(2) }}</td>
+                <td>{{ sale.startAt }}</td>
+                <td>{{ sale.endAt }}</td>
+                <td>{{ sale.numProduct }}</td>
+                <td>{{ sale.numProductSold }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="modal-backdrop" *ngIf="isVisible" (click)="closeModal()"></div>
+<div class="modal fade show d-block" *ngIf="isVisible" tabindex="-1" aria-labelledby="addNewDiscountModalLabel" style="z-index: 1050;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="addNewDiscountModalLabel">Add New Discount</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="addProductSelect" class="form-label">Select Product</label>
+            <select class="form-select" id="addProductSelect" formControlName="productId" (change)="checkExistingDiscount()">
+              <option value="">-- Select a Product --</option>
+              <option *ngFor="let product of products$ | async" [value]="product.productId" [disabled]="product.sale">
+                {{ product.productName }} {{ product.sale ? '(Discount Already Set)' : '' }}
+              </option>
+            </select>
+            <div *ngIf="addForm.get('productId')?.invalid && addForm.get('productId')?.touched" class="text-danger">
+              Product selection is required.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="addDiscountPercentage" class="form-label">Discount (%)</label>
+            <input type="number" step="0.1" min="0" max="100" class="form-control" id="addDiscountPercentage" formControlName="percentSale">
+            <div *ngIf="addForm.get('percentSale')?.invalid && addForm.get('percentSale')?.touched" class="text-danger">
+              Discount percentage is required and must be between 0 and 100.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="addNumProduct" class="form-label">Number of Products Available</label>
+            <input type="number" min="0" class="form-control" id="addNumProduct" formControlName="numProduct">
+            <div *ngIf="addForm.get('numProduct')?.invalid && addForm.get('numProduct')?.touched" class="text-danger">
+              Number of products must be a non-negative number.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="addNumProductSold" class="form-label">Number of Products Sold</label>
+            <input type="number" min="0" class="form-control" id="addNumProductSold" formControlName="numProductSold">
+            <div *ngIf="addForm.get('numProductSold')?.invalid && addForm.get('numProductSold')?.touched" class="text-danger">
+              Number of products sold must be a non-negative number.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="addStartAt" class="form-label">Start Date</label>
+            <input type="date" class="form-control" id="addStartAt" formControlName="startAt">
+            <div *ngIf="addForm.get('startAt')?.invalid && addForm.get('startAt')?.touched" class="text-danger">
+              Start date is required.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="addEndAt" class="form-label">End Date</label>
+            <input type="date" class="form-control" id="addEndAt" formControlName="endAt">
+            <div *ngIf="addForm.get('endAt')?.invalid && addForm.get('endAt')?.touched" class="text-danger">
+              End date is required.
+            </div>
+          </div>
+          <div class="alert alert-warning" *ngIf="showDiscountWarning">
+            This product already has a discount. Please remove the existing discount before adding a new one.
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="addForm.invalid || showDiscountWarning">Add Discount</button>
+      </div>
+    </div>
+  </div>
+</div>

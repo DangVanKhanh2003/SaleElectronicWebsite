@@ -1,0 +1,53 @@
+
+    
+    <!-- Product Section Begin -->
+    <section class="product spad">
+        <div class="row" style="margin-left:150px; margin-right: 150px;">
+            <div class="w-100 d-flex justify-content-center">
+                <div class="row" style="width: 1400px;">
+                    <div class="row p-3">
+                        <app-sorting [sortOptions]="sortOptions" (sortChange)="onSortChange($event)"></app-sorting>
+                    </div>
+                    <div class="col-lg-2-4 col-md-3 col-sm-6" *ngFor="let item of products">
+                        <div class="product-card" [routerLink]="['/productDetails/', item.productId]">
+                            <div class="product-image-container" >
+                                <div class="discount-badge" *ngIf="item.sale">Giảm {{item.sale.percentSale}}%</div>
+                                <div class="w-100 d-flex justify-content-center">
+                                    <img class="product-image" [src]="item.mainImg" alt="Product Image" >
+    
+                                </div>
+                            </div>
+                            
+                            <div class="product-info">
+                                <div class="product-name">{{item.productName}}</div>
+                                
+                                <div class="price-container">
+                                    <div class="text_price" *ngIf="item.sale">
+                                        {{item.price - item.price * item.sale.percentSale / 100| number:'1.0-0'}}
+                                    </div>
+                                    <div class="original-price" *ngIf="item.sale">{{item.price}}</div>
+                                    <div class="text_price-price" *ngIf="!item.sale">{{item.price}}</div>
+                                    <span class="discount-percent" *ngIf="item.sale">-{{item.sale.percentSale}}%</span>
+                                </div>
+    
+                                <div style=" position: absolute; bottom: 30px; width: 100%; left: 0px; padding: 10px;">
+                                    <div class="installment-info">
+                                        Không phí chuyển đổi khi trả góp 0% qua thẻ tín dụng kỳ hạn 3-6 tháng
+                                    </div>
+                                    
+                                    <div class="rating">
+                                        ★★★★★
+                                    </div>
+                                    
+                                    <button class="buy-btn">Mua ngay</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            
+        </div>
+    </section>
+    <!-- Product Section End -->

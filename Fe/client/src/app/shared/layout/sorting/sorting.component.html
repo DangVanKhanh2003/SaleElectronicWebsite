@@ -1,0 +1,15 @@
+
+<!-- sort-options.component.html -->
+<div class="sorting-section">
+    <h2 class="sorting-title">Sắp xếp theo</h2>
+    <div class="sorting-container">
+      <button 
+        *ngFor="let option of sortOptions" 
+        class="sorting-button" 
+        [ngClass]="{ 'active': option.isActive }"
+        (click)="selectSortOption(option.id)">
+        <i class="sorting-icon {{ option.icon }}"></i>
+        {{ option.label }}
+      </button>
+    </div>
+  </div>

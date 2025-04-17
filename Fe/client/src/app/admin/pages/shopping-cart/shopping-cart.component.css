@@ -1,0 +1,87 @@
+.shoping__cart__item__close :hover{
+    color: red;
+}
+.shoping__cart__item__close{
+    cursor: pointer;
+}
+.shoping__checkout .primary-btn{
+    cursor: pointer;
+}
+
+/* Custom Checkbox */
+.custom-checkbox {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+}
+
+/* Hide default checkbox */
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Custom checkmark */
+.custom-checkbox .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: 0.2s;
+}
+
+/* When checkbox is checked */
+.custom-checkbox input:checked ~ .checkmark {
+    background-color: #ff6f61;
+    border-color: #ff6f61;
+}
+
+/* Checkmark symbol */
+.custom-checkbox .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show checkmark when checked */
+.custom-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Checkmark styling */
+.custom-checkbox .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.shopping__cart__select .form-select {
+    /* Additional custom styling on top of Bootstrap */
+    cursor: pointer;
+    border-color: #ced4da;
+  }
+  
+  .shopping__cart__select .form-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .color-circle {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 1px solid #eaeaea;
+    margin-left: 5px;
+  }

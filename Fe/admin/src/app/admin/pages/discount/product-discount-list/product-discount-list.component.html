@@ -1,0 +1,103 @@
+<div class="discount-management">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="mb-0">Product Discount Management</h4>
+      <div>
+        <button class="btn btn-primary me-2" (click)="isAddModalVisible = true">
+          <i class="bi bi-plus-lg"></i> Add New Discount
+        </button>
+        <button class="btn btn-outline-primary">
+          <i class="bi bi-file-earmark-excel"></i> Export
+        </button>
+      </div>
+    </div>
+  
+    <!-- Search and Filter Options -->
+    <form [formGroup]="filterForm">
+      <div class="row mb-3">
+        <div class="col-md-3 mb-2">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search products..." formControlName="searchInput" (input)="filterProducts()">
+            <button class="btn btn-outline-secondary" type="button">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-2 mb-2">
+          <input type="number" class="form-control" placeholder="Discount From (%)" formControlName="discountFrom">
+        </div>
+        <div class="col-md-2 mb-2">
+          <input type="number" class="form-control" placeholder="Discount To (%)" formControlName="discountTo">
+        </div>
+        <div class="col-md-2 mb-2">
+          <input type="date" class="form-control" formControlName="dateFrom">
+        </div>
+        <div class="col-md-2 mb-2">
+          <button type="button" class="btn btn-primary w-100" (click)="applyFilters()">
+            <i class="bi bi-funnel"></i> Apply Filters
+          </button>
+        </div>
+        <div class="col-md-1 mb-2">
+          <button type="button" class="btn btn-outline-secondary w-100" (click)="resetFilters()">
+            <i class="bi bi-x-circle"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  
+    <!-- Product List Table -->
+    <div class="table-responsive">
+      <table class="table table-striped table-hover border">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of filteredProducts">
+            <td>{{ product.productId }}</td>
+            <td><img [src]="product.mainImg" class="product-img" [alt]="product.productName"></td>
+            <td>{{ product.productName }}</td>
+            <td>{{ product.brand }}</td>
+            <td>{{ product.category.categoryName }}</td>
+            <td>${{ product.price.toFixed(2) }}</td>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-primary" (click)="openEditModal(product)">
+                  <i class="bi bi-tag"></i> 
+                </button>
+                <button class="btn btn-info" (click)="openListModal(product)">
+                  <i class="bi bi-list"></i> 
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Pagination -->
+    <nav aria-label="Products pagination" class="mt-4">
+      <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  
+  <app-add-discount-modal *ngIf="isAddModalVisible" (saleAdded)="addSale($event)" (close)="isAddModalVisible = false"></app-add-discount-modal>
+  <app-edit-discount-modal *ngIf="isEditModalVisible" [product]="selectedProduct" (saleUpdated)="updateSale($event)" (close)="isEditModalVisible = false"></app-edit-discount-modal>
+  <app-remove-discount-modal *ngIf="isRemoveModalVisible" [product]="selectedProduct" (saleRemoved)="removeSale($event)" (close)="isRemoveModalVisible = false"></app-remove-discount-modal>
+  <app-list-discount-modal *ngIf="isListModalVisible" [product]="selectedProduct" (close)="isListModalVisible = false"></app-list-discount-modal>

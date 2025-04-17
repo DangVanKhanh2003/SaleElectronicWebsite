@@ -1,0 +1,137 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+
+.order-nav {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 700px;
+    margin: auto;
+}
+
+.nav-btn {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-btn.active {
+    background: #d70018;
+    color: white;
+    border: none;
+}
+
+.nav-btn:hover {
+    background: #ddd;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #eeeeee8c;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+.order{
+    position: relative;
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.order-item {
+    display: flex;
+    align-items: center;
+
+}
+
+.product-img {
+    width: 110px;
+    height: 110px;
+    border-radius: 5px;
+    margin-right: 15px;
+}
+
+.order-details {
+    flex: 1;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+}
+
+.delivered {
+    background-color: #ebf8f2;
+    color: #52a78c;
+}
+
+.price {
+    color: red;
+    font-weight: 650;
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+.amout {
+    color: black;
+    font-size: 18px;
+    margin: 0px;
+}
+.order-date {
+    color: #888;
+    font-size: 14px;
+}
+
+.detail-btn {
+    background: #ffffff;
+    color: #c82333;
+    border: 1px #c82333 solid;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.detail-btn:hover {
+    background: #c82333;
+    color: white;
+}
+
+
+
+.simple-button {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 12px;
+    border: 1px solid #B6B6B6;
+    border-radius: 3px;
+    background-color: #FFFFFF;
+    color: #B6B6B6;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    margin: 0px;
+    padding: 2px 4px;
+}

@@ -1,0 +1,43 @@
+<!-- Overlay -->
+<div class="modal-backdrop fade show"></div>
+
+<!-- Modal -->
+<div class="modal d-block" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="close.emit()"></button>
+      </div>
+      <div class="modal-body">
+        <form #addForm="ngForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="categoryName" class="form-label">Category Name</label>
+            <input type="text" class="form-control" id="categoryName" [(ngModel)]="newCategory.categoryName" name="categoryName" required>
+          </div>
+          <div class="mb-3">
+            <label for="categoryIcon" class="form-label">Icon (Bootstrap Icon Class)</label>
+            <div class="input-group">
+              <span class="input-group-text">bi bi-</span>
+              <input type="text" class="form-control" id="categoryIcon" [(ngModel)]="newCategory.categoryIcon" name="categoryIcon" required>
+            </div>
+            <div class="form-text">
+              Enter the Bootstrap icon name without the "bi bi-" prefix.
+              <a href="https://icons.getbootstrap.com/" target="_blank">Browse icons</a>
+            </div>
+            <div class="mt-2" *ngIf="newCategory.categoryIcon">
+              Icon Preview:
+              <i class="bi bi-{{newCategory.categoryIcon}} fs-4 text-primary"></i>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="close.emit()">Cancel</button>
+        <button type="submit" class="btn btn-success" (click)="onSubmit()" [disabled]="!addForm.valid">
+          Add Category
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

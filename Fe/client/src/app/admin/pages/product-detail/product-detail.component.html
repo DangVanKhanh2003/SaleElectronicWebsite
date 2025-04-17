@@ -1,0 +1,189 @@
+<div class="container">
+    <!-- Product Header -->
+    <h1 class="product-header">
+      {{ productItem.productName }}
+    </h1>
+  
+    <!-- Product Display -->
+    <div class="product-display">
+      <div class="product-images">
+        <div class="main-image-container">
+          <img [src]="selectedImage || productItem.mainImg" alt="Product Image" class="main-image">
+        </div>
+        <div class="thumbnail-container">
+          <img *ngFor="let img of listProductImg; let i = index"
+               [src]="img.imgLink"
+               [ngClass]="{'thumbnail': true, 'active': selectedImage === img.imgLink}"
+               (click)="selectImage(img)"
+               alt="Thumbnail {{ i + 1 }}">
+        </div>
+      </div>
+  
+      <div class="product-info">
+
+        <div class="price" *ngIf="productItem.sale">
+          {{productItem.price - productItem.price * productItem.sale.percentSale / 100| number:'1.0-0'}}đ
+          <span class="original-price">{{ productItem.price | number:'1.0-0' }}đ</span>
+        </div>
+        <div class="price" *ngIf="!productItem.sale">{{productItem.price}}đ</div>
+
+        <div class="color-select">
+          <div class="color-title">Chọn màu để xem giá và chi nhánh có hàng</div>
+          <div class="color-options">
+            <div *ngFor="let color of colors"
+                 [ngClass]="{'color-option': true, 'active': colorIdActive == color.colorId}"
+                 (click)="selectColor(color)">
+              <div class="color-circle" [style.background-color]="color.colorCode"></div>
+              <div class="color-name">{{ color.colorName }}</div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="action-buttons">
+            <button class="buy-now-button" [routerLink]="['/shoppingCart']" (click)="addShoppingCart(productItem, true)" >
+              MUA NGAY<br>
+              <span class="delivery-info">Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng</span>
+            </button>
+            <button class="button  add-to-cart-button" (click)="addShoppingCart(productItem)" style="height: 72px;">
+                <span class="cart-icon"><i class="bi bi-cart-plus"></i></span> 
+                <span>Thêm vào giỏ</span></button>
+          </div>
+      </div>
+    </div>
+    <!-- Specifications Section -->
+    <div class="specs-section">
+        <h3 class="section-title">Thông số kỹ thuật</h3>
+        <table class="specs-table">
+            <tr *ngFor="let spec of productSpecification">
+            <td style="color: black;">{{ spec.specType }}</td>
+            <td>{{ spec.description }}</td>
+            </tr>
+        </table>
+        </div>
+
+  
+    <!-- Rating Section -->
+    <div class="rating-section">
+      <h3 class="qa-title">Đánh giá & Nhận xét {{ productItem.productName }}</h3>
+  
+      <!-- Improved Overall Rating -->
+      <div class="rating-overall">
+        <div class="rating-summary">
+          <div class="rating-score">4.9/5</div>
+          <div class="rating-stars">
+            <span class="rating-star">★</span>
+            <span class="rating-star">★</span>
+            <span class="rating-star">★</span>
+            <span class="rating-star">★</span>
+            <span class="rating-star">★</span>
+          </div>
+          <div class="rating-count">276 đánh giá</div>
+        </div>
+        <div class="rating-breakdown">
+          <div class="rating-bar-container">
+            <span class="rating-bar-label">5 ★</span>
+            <div class="rating-bar">
+              <div class="rating-bar-fill" style="width: 89%;"></div>
+            </div>
+            <span class="rating-bar-count">244 đánh giá</span>
+          </div>
+          <div class="rating-bar-container">
+            <span class="rating-bar-label">4 ★</span>
+            <div class="rating-bar">
+              <div class="rating-bar-fill" style="width: 11%;"></div>
+            </div>
+            <span class="rating-bar-count">32 đánh giá</span>
+          </div>
+          <div class="rating-bar-container">
+            <span class="rating-bar-label">3 ★</span>
+            <div class="rating-bar">
+              <div class="rating-bar-fill" style="width: 0%;"></div>
+            </div>
+            <span class="rating-bar-count">0 đánh giá</span>
+          </div>
+          <div class="rating-bar-container">
+            <span class="rating-bar-label">2 ★</span>
+            <div class="rating-bar">
+              <div class="rating-bar-fill" style="width: 0%;"></div>
+            </div>
+            <span class="rating-bar-count">0 đánh giá</span>
+          </div>
+          <div class="rating-bar-container">
+            <span class="rating-bar-label">1 ★</span>
+            <div class="rating-bar">
+              <div class="rating-bar-fill" style="width: 0%;"></div>
+            </div>
+            <span class="rating-bar-count">0 đánh giá</span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Rate Product Button -->
+      <div style="text-align: center; margin-bottom: 30px;">
+        <button class="send-button" style="float: none; padding: 12px 30px;">Đánh giá ngay</button>
+      </div>
+  
+      <!-- Filter Options -->
+      <div style="margin-bottom: 20px; border-bottom: 1px solid #eaeaea; padding-bottom: 20px;">
+        <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 15px; color: #333;">Lọc theo</h4>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button style="padding: 8px 15px; border: 1px solid #e30000; border-radius: 20px; background-color: #e30000; color: white; font-size: 14px; cursor: pointer;">Tất cả</button>
+          <button style="padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; background-color: white; color: #333; font-size: 14px; cursor: pointer;">Có hình ảnh</button>
+          <button style="padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; background-color: white; color: #333; font-size: 14px; cursor: pointer;">Đã mua hàng</button>
+          <button style="padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; background-color: white; color: #333; font-size: 14px; cursor: pointer;">
+            5 ★ <span style="color: #f5a623;">★★★★★</span>
+          </button>
+          <button style="padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; background-color: white; color: #333; font-size: 14px; cursor: pointer;">
+            4 ★ <span style="color: #f5a623;">★★★★</span>
+          </button>
+          <button style="padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; background-color: white; color: #333; font-size: 14px; cursor: pointer;">
+            3 ★ <span style="color: #f5a623;">★★★</span>
+          </button>
+          <button style="padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; background-color: white; color: #333; font-size: 14px; cursor: pointer;">
+            2 ★ <span style="color: #f5a623;">★★</span>
+          </button>
+          <button style="padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; background-color: white; color: #333; font-size: 14px; cursor: pointer;">
+            1 ★ <span style="color: #f5a623;">★</span>
+          </button>
+        </div>
+      </div>
+  
+      <!-- Review Item -->
+      <div class="comment" *ngFor="let review of reviews">
+        <div class="avatar" style="background-color: #555; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: 600;">
+          {{ review.reviewerName[0] | uppercase }}
+        </div>
+        <div class="comment-content">
+          <div class="commenter-name">{{ review.reviewerName }}</div>
+          <div style="display: flex; gap: 5px; margin-bottom: 8px;">
+            <span style="color: #f5a623; font-size: 14px;">{{ '★'.repeat(review.rating) }}</span>
+          </div>
+          <div style="color: #555; font-size: 14px; margin-bottom: 8px;">
+            <span style="font-weight: 500;">Hiệu năng:</span> {{ review.performance }}
+            <span style="font-weight: 500; margin-left: 10px;">Thời lượng pin:</span> {{ review.batteryLife }}
+            <span style="font-weight: 500; margin-left: 10px;">Chất lượng camera:</span> {{ review.cameraQuality }}
+          </div>
+          <div class="comment-text">{{ review.comment }}</div>
+          <div class="comment-time">{{ review.timestamp }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="related-products">
+        <h3 class="section-title">SẢN PHẨM TƯƠNG TỰ</h3>
+        <div class="products-container">
+          <div class="product-card" *ngFor="let related of relatedProducts">
+            <div class="discount-label" *ngIf="related.discount">Giảm {{ related.discount }}%</div>
+            <img [src]="related.img" alt="{{ related.name }}">
+            <h4>{{ related.name }}</h4>
+            <div>
+              <span class="product-price">{{ related.price | number:'1.0-0' }}đ</span>
+              <span class="product-original-price" *ngIf="related.originalPrice">{{ related.originalPrice | number:'1.0-0' }}đ</span>
+            </div>
+            <button class="favorite-button">♡</button>
+          </div>
+        </div>
+      </div>
+
+  </div>

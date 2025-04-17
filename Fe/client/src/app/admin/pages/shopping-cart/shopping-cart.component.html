@@ -1,0 +1,88 @@
+<!-- Shopping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th> <!-- Custom Checkbox Column -->
+                                <th class="shoping__product">Sản phẩm</th>
+                                <th>Màu sắc</th>
+                                <td></td>
+                                <th>Giá tiền</th>
+                                <th>Số lượng</th>
+                                <th>Tổng tiền</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of shoppingCarts">
+                                <td>
+                                    <!-- Custom Checkbox -->
+                                    <label class="custom-checkbox">
+                                        <input type="checkbox" [(ngModel)]="item.isCheck">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td class="shoping__cart__item">
+                                    <img [src]="item.mainImg" alt="" style="width: 100px; height: 100px; border: 0px;">
+                                    <h5>{{ item.productName }}</h5>
+                                </td>
+                                <td>
+                                    <select [(ngModel)]="item.colorId" (change)="onColorChange(item)" class="form-select" style="width: fit-content;">
+                                        <option *ngFor="let color of item.colorColection" [value]="color.colorId">
+                                            {{ color.colorName }}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="color-circle" [style.background-color]="item.colorCode"></div>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    <div *ngIf="item.sale">
+                                        {{ item.price - (item.price * item.sale.percentSale / 100) | number:'1.0-0' }} VND
+                                    </div>
+                                    <div *ngIf="!item.sale">
+                                        {{ item.price | number:'1.0-0' }} VND
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="number" min="1" [value]="item.amount" (input)="onInputChange($event, item)">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    <div *ngIf="item.sale">
+                                        {{ (item.price - item.price * item.sale.percentSale / 100) * item.amount | number:'1.0-0' }} VND
+                                    </div>
+                                    <div *ngIf="!item.sale">
+                                        {{ item.price * item.amount | number:'1.0-0' }} VND
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <span class="icon_close" (click)="removeItem(item)"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__checkout">
+                    <h5>Thành tiền</h5>
+                    <ul>
+                        <li>Tổng cộng: <span>{{ totalPrice }} VND</span></li>
+                    </ul>
+                    <a class="primary-btn" (click)="Buy()">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->

@@ -1,0 +1,63 @@
+
+<div class="modal-backdrop" *ngIf="isVisible" (click)="closeModal()"></div>
+<div class="modal fade show d-block" *ngIf="isVisible" tabindex="-1" aria-labelledby="discountModalLabel" style="z-index: 1050;">
+    <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="discountModalLabel">{{ product?.sale ? 'Edit' : 'Set' }} Discount for {{ product?.productName }}</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeModal()" [disabled]="isLoading"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="discountPercentage" class="form-label">Discount (%)</label>
+            <input type="number" step="0.1" min="0" max="100" class="form-control" id="discountPercentage" formControlName="percentSale" [disabled]="isLoading">
+            <div *ngIf="editForm.get('percentSale')?.invalid && editForm.get('percentSale')?.touched" class="text-danger">
+              Discount percentage is required and must be between 0 and 100.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="numProduct" class="form-label">Number of Products Available</label>
+            <input type="number" min="0" class="form-control" id="numProduct" formControlName="numProduct" [disabled]="isLoading">
+            <div *ngIf="editForm.get('numProduct')?.invalid && editForm.get('numProduct')?.touched" class="text-danger">
+              Number of products must be a non-negative number.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="numProductSold" class="form-label">Number of Products Sold</label>
+            <input type="number" min="0" class="form-control" id="numProductSold" formControlName="numProductSold" [disabled]="isLoading">
+            <div *ngIf="editForm.get('numProductSold')?.invalid && editForm.get('numProductSold')?.touched" class="text-danger">
+              Number of products sold must be a non-negative number.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="startAt" class="form-label">Start Date</label>
+            <input type="date" class="form-control" id="startAt" formControlName="startAt" [disabled]="isLoading">
+            <div *ngIf="editForm.get('startAt')?.invalid && editForm.get('startAt')?.touched" class="text-danger">
+              Start date is required.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="endAt" class="form-label">End Date</label>
+            <input type="date" class="form-control" id="endAt" formControlName="endAt" [disabled]="isLoading">
+            <div *ngIf="editForm.get('endAt')?.invalid && editForm.get('endAt')?.touched" class="text-danger">
+              End date is required.
+            </div>
+          </div>
+          <div *ngIf="isLoading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()" [disabled]="isLoading">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="editForm.invalid || isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Save Discount
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

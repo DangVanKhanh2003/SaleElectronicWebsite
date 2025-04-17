@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-center">
+    <div class="orderDetail">
+        <div class="header">
+            <h1 class="order-title">Chi tiết đơn hàng</h1>
+        </div>
+        
+        <div class="order-info">
+            <div>Mã đơn hàng: {{order?.orderPendingId}}</div>
+            <div>{{order?.odertDate}}</div>
+            <span class="status-pending" *ngIf="order?.status === 'pending'">Chờ xác nhận</span>
+            <span class="status-cancel" *ngIf="order?.status === 'cancel'">Đã hủy</span>
+            <span class="status-pending" *ngIf="order?.status === 'approve'">Đã xác nhận</span>
+        </div>
+        <div class="product-card">
+            <div  *ngFor="let item of order.listProductOrederPending, let i = index">
+                <div style="background-color: rgba(190, 190, 190, 0.568); height: 1px; margin: 15px; " *ngIf="i > 0">
+                </div>
+                <div class="product-details">
+                    <img [src]="item.mainImg" alt="Tấm lót chuột" class="product-image">
+                    <div class="product-info">
+                        <div class="product-name ">{{item.productName}}</div>
+                        <div>
+                            <span class="product-variant">{{item.colorName}}</span>
+                            <span class="product-quantity">Số lượng: {{item.amount}}</span>
+                        </div>
+                        <div>
+                            <div class="price-container">
+                                <div class="text-danger fs-4 pe-2" *ngIf="item.sale">
+                                    {{item.price - item.price * item.sale.percentSale / 100| number:'1.0-0'}}
+                                </div>
+                                <div class="original-price" *ngIf="item.sale">{{item.price}}</div>
+                                <div class="text-danger fs-4" *ngIf="!item.sale">{{item.price}}</div>
+                                <span class="discount-percent" *ngIf="item.sale">-{{item.sale.percentSale}}%</span>
+                            </div>
+                        </div>
+                    </div>
+                <div class="action-buttons"  style="position: relative;">
+                        <button class="action-button primary-button" style="position: absolute; bottom: 0px; right: 0px; width: 80px;"
+                         [routerLink]="['/productDetails/', item.productId]">Mua lại</button>
+                   
+                </div>
+            </div>
+        </div>
+        </div>
+        
+        <div class="payment-info">
+            <div class="section-title">
+                <span class="section-icon">🛒</span>
+                Thông tin thanh toán
+            </div>
+            <div class="payment-row">
+                <span>Tổng tiền sản phẩm:</span>
+                <span>{{totalPrice| number:'1.0-0'}}đ</span>
+            </div>
+            <div class="payment-row">
+                <span>Giảm giá:</span>
+                <span class="discount">-{{totalDiscountPrice| number:'1.0-0'}}₫</span>
+            </div>
+            <div class="payment-row">
+                <span>Phải thanh toán:</span>
+                <span>{{totalPay| number:'1.0-0'}}₫</span>
+            </div>
+        </div>
+        
+        <div class="customer-info">
+            <div class="section-title">
+                <span class="section-icon">👤</span>
+                Thông tin khách hàng
+            </div>
+            <div class="customer-row">
+                <span class="customer-icon">👤</span>
+                <span>Đặng Văn Khánh</span>
+            </div>
+            <div class="customer-row">
+                <span class="customer-icon">📞</span>
+                <span>0393511358</span>
+            </div>
+            <div class="customer-row">
+                <span class="customer-icon">📍</span>
+                <span>283 Hồ Tùng Mậu, P. Cầu Diễn, Q. Nam Từ Liêm</span>
+            </div>
+        </div>
+    </div>
+</div>

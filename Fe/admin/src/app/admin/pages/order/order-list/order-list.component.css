@@ -1,0 +1,11 @@
+.product-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+.modal-backdrop {
+background-color: rgba(128, 128, 128, 0.5) !important; /* Gray with 50% opacity */
+}
+    

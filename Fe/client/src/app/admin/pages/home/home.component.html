@@ -1,0 +1,171 @@
+<div style="width: 100%; justify-content: center;">
+    <!-- Hot Sale Section Begin -->
+    <div class="row d-flex justify-content-center" *ngIf="productDiscounts.length > 0">
+      <div class="hot-sale">
+        <div class="hot-sale-header">
+          <div class="header-content">
+            <div class="title-section">
+              <img
+                src="\assets\img\banner\hot-sale-cuoi-tuan-20-03-2024.gif"
+                alt="title"
+                style="height: 60px;"
+              />
+            </div>
+          </div>
+        </div>
+  
+        <!-- Wrapper to position the navigation buttons -->
+        <div class="slider-container position-relative">
+          <!-- Previous button -->
+          <button class="nav-button prev-button" (click)="slidePrev(0)">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          
+          <div class="product-slider-hotsale" #productSlider style="background-color: #F9405E;"
+              (mousedown)="onMouseDown($event, 0)"
+              (mouseup)="onMouseUp()"
+              (mousemove)="onMouseMove($event)">
+            <div class="products-row" style="background-color: #F9405E;">
+              <div
+                class="product-column"
+                *ngFor="let item of productDiscounts"
+                style="background-color: #F9405E; margin: 0px; padding: 5px; width: 250px;"
+              >
+                <div
+                  class="product-card"
+                  [routerLink]="['/productDetails/', item.productId]"
+                  style="width: 250px;"
+                >
+                  <div class="product-image-container">
+                    <div class="discount-badge" *ngIf="item.sale">
+                      Giảm {{ item.sale.percentSale }}%
+                    </div>
+                    <div class="w-100 d-flex justify-content-center">
+                      <img
+                        class="product-image"
+                        [src]="item.mainImg"
+                        alt="Product Image"
+                      />
+                    </div>
+                  </div>
+  
+                  <div class="product-info">
+                    <div class="product-name">{{ item.productName }}</div>
+  
+                    <div class="price-container">
+                      <div class="current-price" *ngIf="item.sale">
+                        {{ (item.price * (1 - item.sale.percentSale / 100)) | number:'1.0-0' }}đ
+                      </div>
+                      <div class="original-price" *ngIf="item.sale">
+                        {{ item.price | number:'1.0-0' }}đ
+                      </div>
+                      <div class="current-price" *ngIf="!item.sale">
+                        {{ item.price | number:'1.0-0' }}đ
+                      </div>
+                      <span class="discount-percent" *ngIf="item.sale">
+                        -{{ item.sale.percentSale }}%
+                      </span>
+                    </div>
+  
+                    <div class="installment-info">
+                      Không phí chuyển đổi khi trả góp 0% qua thẻ tín dụng kỳ hạn 3-6 tháng
+                    </div>
+  
+                    <div class="rating">★★★★★</div>
+  
+                    <button class="buy-btn">Mua ngay</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Next button with Bootstrap icon -->
+          <button class="nav-button next-button" (click)="slideNext(0)">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Hot Sale Section End -->
+  
+    <div class="d-flex justify-content-center">
+      <div class="pt-5">
+        <div *ngFor="let listpro of listProductByCategory, let i = index">
+          <h3 style="font-weight: bold; font-family:   sans-serif; padding-top: 50px; padding-bottom: 10px; cursor: pointer;" [routerLink]="['/products/', listpro[0].category.categoryId]">
+            <span><i class="bi bi-{{ listpro[0].category.categoryIcon }} fs-2 p2 text-primary custom-icon" ></i></span>  
+              {{listpro[0].category.categoryName}}</h3>
+            <div class="slider-container position-relative">
+              <button class="nav-button prev-button" (click)="slidePrev(i + 1)">
+                  <i class="bi bi-chevron-left"></i>
+                </button>
+            <div class="product-slider" #productSlider 
+                (mousedown)="onMouseDown($event, i + 1)"
+                (mouseup)="onMouseUp()"
+                (mousemove)="onMouseMove($event)">
+                <div class="products-row" >
+                  <div
+                    class="product-column"
+                    *ngFor="let item of listpro"
+                    style="background-color: #f5f5f5; margin: 0px; padding: 5px; width: 250px;"
+                  >
+                    <div
+                      class="product-card"
+                      [routerLink]="['/productDetails/', item.productId]"
+                      style="width: 250px;"
+                    >
+                      <div class="product-image-container">
+                        <div class="discount-badge" *ngIf="item.sale">
+                          Giảm {{ item.sale.percentSale }}%
+                        </div>
+                        <div class="w-100 d-flex justify-content-center">
+                          <img
+                            class="product-image"
+                            [src]="item.mainImg"
+                            alt="Product Image"
+                          />
+                        </div>
+                      </div>
+        
+                      <div class="product-info">
+                        <div class="product-name">{{ item.productName }}</div>
+        
+                        <div class="price-container">
+                          <div class="current-price" *ngIf="item.sale">
+                            {{ (item.price * (1 - item.sale.percentSale / 100)) | number:'1.0-0' }}đ
+                          </div>
+                          <div class="original-price" *ngIf="item.sale">
+                            {{ item.price | number:'1.0-0' }}đ
+                          </div>
+                          <div class="current-price" *ngIf="!item.sale">
+                            {{ item.price | number:'1.0-0' }}đ
+                          </div>
+                          <span class="discount-percent" *ngIf="item.sale">
+                            -{{ item.sale.percentSale }}%
+                          </span>
+                        </div>
+        
+                        <div class="installment-info">
+                          Không phí chuyển đổi khi trả góp 0% qua thẻ tín dụng kỳ hạn 3-6 tháng
+                        </div>
+        
+                        <div class="rating">★★★★★</div>
+        
+                        <button class="buy-btn">Mua ngay</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <!-- Next button with Bootstrap icon -->
+            <button class="nav-button next-button" (click)="slideNext(i + 1)">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+          </div>
+        </div>
+        <!-- Wrapper for second slider -->
+       
+      </div>
+    </div>
+    <!-- Product Section -->
+  </div>

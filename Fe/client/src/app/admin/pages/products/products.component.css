@@ -1,0 +1,152 @@
+.product-card {
+    cursor: pointer;
+    margin-bottom: 15px;
+    width: 250px;
+    height: 580px;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.product-image-container {
+    position: relative;
+    padding: 15px;
+    background: linear-gradient(to bottom, #f9f9f9, white);
+}
+
+.product-image {
+    height: 250px;
+    display: block;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.03);
+}
+
+/* Nâng cấp phần thẻ giảm giá */
+.discount-badge {
+    position: absolute;
+    top: 15px;
+    left: -5px;
+    background: linear-gradient(135deg, #ff0038, #e71d36);
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 3px 8px rgba(231, 29, 54, 0.4);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    z-index: 2;
+}
+
+/* Thêm mũi tên nhỏ cho thẻ giảm giá */
+.discount-badge:before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border-top: 5px solid #c71020;
+    border-left: 5px solid transparent;
+    filter: brightness(0.8);
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #333;
+    line-height: 1.4;
+}
+
+.price-container {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 12px;
+}
+
+.current-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #e71d36;
+    margin-right: 10px;
+}
+
+.original-price {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+}
+
+/* Hiển thị % giảm giá dưới giá */
+.discount-percent {
+    display: inline-block;
+    background-color: #fff0f3;
+    color: #e71d36;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.installment-info {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 15px;
+    padding: 8px 10px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    border-left: 3px solid #2196f3;
+}
+
+.rating {
+    display: flex;
+    color: #ffc107;
+    font-size: 18px;
+    margin-top: 15px;
+}
+
+/* Hiệu ứng đặc biệt cho nút mua hàng */
+.buy-btn {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    background: linear-gradient(135deg, #ff6b6b, #e71d36);
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(231, 29, 54, 0.3);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.buy-btn:hover {
+    background: linear-gradient(135deg, #ff5252, #d50000);
+    box-shadow: 0 6px 16px rgba(231, 29, 54, 0.4);
+    transform: translateY(-2px);
+}
+
+@media (min-width: 992px) {
+    .col-lg-2-4 {
+      flex: 0 0 auto;
+      width: 20%;
+    }
+  }

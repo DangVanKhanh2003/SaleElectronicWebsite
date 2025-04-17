@@ -1,0 +1,172 @@
+<div class="card">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Order Management</h4>
+      <div>
+        <button class="btn btn-outline-light me-2"><i class="bi bi-file-earmark-excel"></i> Export</button>
+        <button class="btn btn-outline-light"><i class="bi bi-printer"></i> Print</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="nav nav-tabs mb-3" id="orderTabs" role="tablist">
+        <li class="nav-item" *ngFor="let tab of ['all', 'pending', 'approved', 'success', 'cancelled']">
+          <button class="nav-link" [class.active]="activeTab === tab" (click)="activeTab = tab">
+            {{ tab | titlecase }} <span [ngClass]="{
+              'badge': true,
+              'bg-secondary': tab === 'all',
+              'bg-warning': tab === 'pending',
+              'bg-info': tab === 'approved',
+              'bg-success': tab === 'success',
+              'bg-danger': tab === 'cancelled',
+              'text-dark': tab === 'pending' || tab === 'approved'
+            }">{{ getOrdersByStatus(tab).length }}</span>
+          </button>
+        </li>
+      </ul>
+  
+      <div class="row mb-3">
+        <div class="col-md-3 mb-2">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search orders..." [(ngModel)]="searchTerm" (input)="filterOrders()">
+            <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+          </div>
+        </div>
+        <div class="col-md-2 mb-2">
+          <select class="form-select" [(ngModel)]="paymentFilter" (change)="filterOrders()">
+            <option value="">All Payment Methods</option>
+            <option value="credit">Credit Card</option>
+            <option value="paypal">PayPal</option>
+            <option value="bank">Bank Transfer</option>
+            <option value="cod">Cash on Delivery</option>
+          </select>
+        </div>
+        <div class="col-md-2 mb-2">
+          <input type="date" class="form-control" [(ngModel)]="dateFrom" (change)="filterOrders()">
+        </div>
+        <div class="col-md-2 mb-2">
+          <input type="date" class="form-control" [(ngModel)]="dateTo" (change)="filterOrders()">
+        </div>
+        <div class="col-md-2 mb-2">
+          <button class="btn btn-primary w-100" (click)="filterOrders()"><i class="bi bi-funnel"></i> Apply Filters</button>
+        </div>
+        <div class="col-md-1 mb-2">
+          <button class="btn btn-outline-secondary w-100" (click)="resetFilters()"><i class="bi bi-x-circle"></i></button>
+        </div>
+      </div>
+  
+      <div class="tab-content">
+        <div class="tab-pane fade" [class.show]="activeTab === 'all'" [class.active]="activeTab === 'all'">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover border">
+              <thead class="table-light">
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Items</th>
+                  <th>Amount</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let order of getOrdersByStatus(activeTab); let i = index">
+                  <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.customer }}</td>
+                    <td>{{ order.date }}</td>
+                    <td>
+                      <button class="btn btn-link p-0 text-decoration-none" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#items-' + order.id" aria-expanded="false">
+                        {{ order.items.length }} Item(s) <i class="bi bi-chevron-down"></i>
+                      </button>
+                    </td>
+                    <td>${{ order.amount.toFixed(2) }}</td>
+                    <td>{{ order.payment }}</td>
+                    <td><span [ngClass]="{
+                      'badge': true,
+                      'bg-warning': order.status === 'pending',
+                      'bg-info': order.status === 'approved',
+                      'bg-success': order.status === 'success',
+                      'bg-danger': order.status === 'cancelled',
+                      'text-dark': order.status === 'pending' || order.status === 'approved'
+                    }">{{ order.status | titlecase }}</span></td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-info text-white" (click)="viewOrder(order)"><i class="bi bi-eye"></i></button>
+                        <button class="btn btn-primary" (click)="editOrder(order)"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-danger" (click)="deleteOrder(order)"><i class="bi bi-trash"></i></button>
+                        <ng-container [ngSwitch]="order.status">
+                          <ng-container *ngSwitchCase="'pending'">
+                            <button class="btn btn-success" (click)="changeStatus(order, 'approved')" title="Approve Order"><i class="bi bi-check-lg"></i></button>
+                            <button class="btn btn-danger" (click)="changeStatus(order, 'cancelled')" title="Cancel Order"><i class="bi bi-x-lg"></i></button>
+                          </ng-container>
+                          <ng-container *ngSwitchCase="'approved'">
+                            <button class="btn btn-success" (click)="changeStatus(order, 'success')" title="Complete Order"><i class="bi bi-check-lg"></i></button>
+                            <button class="btn btn-danger" (click)="changeStatus(order, 'cancelled')" title="Cancel Order"><i class="bi bi-x-lg"></i></button>
+                          </ng-container>
+                          <ng-container *ngSwitchCase="'success'">
+                            <button class="btn btn-warning" (click)="changeStatus(order, 'cancelled')" title="Cancel Order"><i class="bi bi-x-lg"></i></button>
+                          </ng-container>
+                          <ng-container *ngSwitchCase="'cancelled'">
+                            <button class="btn btn-warning" (click)="changeStatus(order, 'pending')" title="Reopen Order"><i class="bi bi-arrow-repeat"></i></button>
+                          </ng-container>
+                        </ng-container>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="8" class="p-0">
+                      <div [id]="'items-' + order.id" class="collapse">
+                        <div class="card card-body border-0">
+                          <h6 class="mb-3">Order Items</h6>
+                          <table class="table table-sm mb-0">
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>Image</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let item of order.items">
+                                <td>{{ item.id }}</td>
+                                <td><img [src]="item.image" class="product-img" [alt]="item.name"></td>
+                                <td>{{ item.name }}</td>
+                                <td>${{ item.price.toFixed(2) }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.total.toFixed(2) }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  
+      <nav aria-label="Orders pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+          <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  
+<app-order-details-modal
+  *ngIf="selectedOrder"
+  [selectedOrder]="selectedOrder"
+  [active]="isModalActive"
+  (close)="closeModal()"
+></app-order-details-modal>

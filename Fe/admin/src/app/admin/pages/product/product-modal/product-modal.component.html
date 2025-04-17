@@ -1,0 +1,160 @@
+<div class="modal-backdrop" *ngIf="isVisible"></div>
+<div class="modal d-block" tabindex="-1" role="dialog" *ngIf="isVisible">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!-- Add/Edit Modal -->
+      <ng-container *ngIf="modalType === 'add' || modalType === 'edit'">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">{{modalType === 'add' ? 'Add New Product' : 'Edit Product'}}</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="close()"></button>
+        </div>
+
+        <div class="modal-body">
+          <div *ngIf="loading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <div *ngIf="error" class="alert alert-danger" role="alert">
+            {{error}}
+          </div>
+
+          <form [formGroup]="productForm" (ngSubmit)="saveProduct()" *ngIf="!loading">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Product Name</label>
+                <input type="text" class="form-control" formControlName="productName">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Brand</label>
+                <input type="text" class="form-control" formControlName="brand">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Series</label>
+                <input type="text" class="form-control" formControlName="series">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Category</label>
+                <select class="form-select" formControlName="categoryId" [(ngModel)]="categoryIdChoosed">
+                  <option value="0">Select Category</option>
+                  <option *ngFor="let category of categories" [value]="category.categoryId">
+                    {{category.categoryName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Price ($)</label>
+                <input type="number" class="form-control" formControlName="price" step="0.01" min="0">
+              </div>
+
+            </div>
+           
+            
+
+             <!-- Specification add -->
+             <div formArrayName="specifications" class="border p-3 mb-2 rounded">
+              <div class="row">
+                <div class="col-md-3 mb-2">
+                  <label class="form-label">Title</label>
+                </div>
+                <div class="col-md-7 mb-2">
+                  <label class="form-label">Content</label>
+                </div>
+              </div>
+              <div *ngFor="let spec of Specifications.controls; let i = index" [formGroupName]="i" >
+                <div class="row">
+                  <div class="col-md-3 mb-2">
+                    <input type="text" class="form-control form-control-sm" formControlName="specType" placeholder="e.g. Màn hình, Chip">
+                  </div>
+                  <div class="col-md-7 mb-2">
+                    <input type="text" class="form-control form-control-sm" formControlName="description" placeholder="e.g. Super AMOLED 1.4 inch">
+                  </div>
+                  <div class="col-2 text-end ">
+                    <button type="button" class="btn btn-danger btn-sm " (click)="removeSpecification(i)" >
+                      <i class="bi bi-trash"></i> Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            
+              <button type="button" class="btn btn-outline-primary btn-sm mt-2" (click)="addSpecification()">
+                <i class="bi bi-plus"></i> Add Specification
+              </button>
+            </div>
+
+            <!-- Sub specification edit -->
+            <div class="mb-3" *ngIf="modalType === 'edit' && specifications.length > 0">
+              <label class="form-label">Specifications</label>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let spec of specifications">
+                  <strong>{{spec.specType}}:</strong> {{spec.description}}
+                </li>
+              </ul>
+            </div>
+              <!-- Main Image add -->
+            <div class="row mb-3">
+              <label class="form-label">Main Image</label>
+              <input type="file" class="form-control" (change)="onImageSelected($event, 'mainImg')" accept="image/*" />
+              <img *ngIf="mainImg.value" [src]="mainImg.value" class="img-thumbnail" style="width: 200px;">
+
+            </div>
+
+            <!-- Sub img add -->
+            <div class="row mb-3">
+              <label class="form-label">Upload Sub Images</label>
+              <input type="file" class="form-control" (change)="onSubImagesSelected($event)" multiple>
+              <div class="d-flex flex-wrap gap-3 mt-2" *ngIf="modalType === 'add'">
+                <div *ngFor="let imgCtrl of subImages.controls; let i = index" class="text-center">
+                  <img [src]="imgCtrl.get('imgData')?.value" class="img-thumbnail" style="height: 50px;">
+                  <small class="d-block text-muted">{{ imgCtrl.get('imgType')?.value }}</small>
+                  <button class="btn btn-sm btn-danger mt-1" (click)="subImages.removeAt(i)">Remove</button>
+                </div>
+              </div>
+            </div>
+            <!-- Sub img edit -->
+            <div class="mb-3" *ngIf="modalType === 'edit' && subImages.length > 0">
+              <label class="form-label">Additional Images</label>
+              <div class="d-flex gap-3 flex-wrap">
+                <div *ngFor="let img of subImages.controls; let i = index" class="text-center">
+                  <img [src]="img.get('imgData')?.value" class="img-thumbnail" style="height: 50px;">
+                  <small class="d-block">Color ID: {{img.get('colorId')?.value}}</small>
+                  <button class="btn btn-sm btn-danger mt-1" (click)="subImages.removeAt(i)">Remove</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+              <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || loading">
+                {{modalType === 'add' ? 'Add Product' : 'Save Changes'}}
+              </button>
+            </div>
+          </form>
+        </div>
+      </ng-container>
+
+      <!-- Delete Modal -->
+      <ng-container *ngIf="modalType === 'delete'">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title">Confirm Delete</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="close()"></button>
+        </div>
+        <div class="modal-body">
+          <p>Bạn có chắc sẽ xóa sản phẩm: <strong>{{productForm.get('productName')?.value}}</strong>?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+          <button type="button" class="btn btn-danger" (click)="deleteProduct()">Delete Product</button>
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+</div>

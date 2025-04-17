@@ -1,0 +1,11 @@
+.spinner-border {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+.modal-body .spinner-border {
+margin: 1rem 0;
+}
+.modal-backdrop {
+background-color: rgba(128, 128, 128, 0.5) !important; /* Gray with 50% opacity */
+}

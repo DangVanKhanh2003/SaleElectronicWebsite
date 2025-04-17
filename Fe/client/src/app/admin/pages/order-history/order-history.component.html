@@ -1,0 +1,85 @@
+<div class="container p-4">
+  <div class="order-nav">
+    <button class="nav-btn" [class.active]="statusOrder === StatusOrderEnum.Pending"
+      (click)="setStatus(StatusOrderEnum.Pending)">
+      Chờ xác nhận
+    </button>
+
+    <button class="nav-btn" [class.active]="statusOrder === StatusOrderEnum.Approved"
+      (click)="setStatus(StatusOrderEnum.Approved)">
+      Đã xác nhận
+    </button>
+
+    <button class="nav-btn" [class.active]="statusOrder === StatusOrderEnum.Success"
+      (click)="setStatus(StatusOrderEnum.Success)">
+      Đã giao hàng
+    </button>
+
+    <button class="nav-btn" [class.active]="statusOrder === StatusOrderEnum.RejectedCustomer"
+      (click)="setStatus(StatusOrderEnum.RejectedCustomer)">
+      Khách hàng hủy
+    </button>
+    <button class="nav-btn" [class.active]="statusOrder === StatusOrderEnum.Rejected"
+      (click)="setStatus(StatusOrderEnum.Rejected)">
+      Giao hàng thất bại
+    </button>
+  </div>
+  <div id="order-history">
+    <div *ngIf="orderPendingResponse != null">
+      <div *ngFor="let itemResponse of orderPendingResponse" class="order">
+        <div *ngFor="let item of itemResponse.listProductOrederPending, let i = index">
+          <div style="background-color: rgba(190, 190, 190, 0.568); height: 1px; margin: 10px; " *ngIf="i > 0">
+          </div>
+          <div class="order-item ">
+            <img [src]="item.mainImg" class="product-img">
+            <div class="order-details">
+
+              <div style=" display: flex; justify-content: space-between;">
+                <div class="d-flex" style="height: fit-content;">
+                  <h4 >{{item.productName}}</h4>
+                    <div class="simple-button ms-2"> {{item.colorName}}</div>
+                  </div>
+                <span class="order-date" *ngIf="i == 0">{{itemResponse.odertDate}}</span>
+              </div>
+              <span class="status delivered">Đang xử lý</span>
+              <div *ngIf="item.sale" class="price">
+                {{ (item.price - item.price * item.sale.percentSale / 100)| number:'1.0-0' }} VND
+              </div>
+              <div *ngIf="!item.sale" class="price">
+                  {{ item.price | number:'1.0-0' }} VND
+              </div>
+              <p class="amount">Số lượng: {{item.amount}}</p>
+            </div>
+          </div>
+        </div>
+        <button class="detail-btn" [routerLink]="['/orderPendingDetail/', itemResponse.orderPendingId]">Xem chi tiết</button>
+      </div>
+    </div>
+
+    <div *ngIf="orderResponse != null">
+      <div *ngFor="let itemResponse of orderResponse" class="order">
+        <div *ngFor="let item of itemResponse.listProductOrder, let i = index">
+          <div style="background-color: rgba(190, 190, 190, 0.568); height: 1px; margin: 10px; " *ngIf="i > 0">
+          </div>
+          <div class="order-item">
+            <img [src]="item.product.mainImg" class="product-img">
+            <div class="order-details">
+              <div style=" display: flex; justify-content: space-between;">
+                <div class="d-flex">
+                  <h4 >{{item.product.productName}}</h4>
+                  <div class="simple-button ms-2"> {{item.color.colorName}}</div>
+                </div>
+                <span class="order-date" *ngIf="i == 0">{{itemResponse.odertDate}}</span>
+              </div>
+              <span class="status delivered">Đang xử lý</span>
+              <p class="price">{{item.untilPrice}} VNĐ</p>
+              <p class="amount">Số lượng: {{item.amount}}</p>
+              <button class="detail-btn" [routerLink]="['/orderDetail/', item.orderId]">Xem chi tiết</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
